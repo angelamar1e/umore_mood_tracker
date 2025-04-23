@@ -21,4 +21,6 @@ class MoodEntryCubit extends Cubit<MoodEntryState> {
           ),
         ),
       );
+
+  //TODO: Methods - add entry
 }

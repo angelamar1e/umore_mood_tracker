@@ -16,4 +16,6 @@ class MoodStatsCubit extends Cubit<MoodStatsState> {
           mostFrequent: Mood(image: FileImage(File('')), description: ''),
         ),
       );
+
+  //TODO: Methods - get history list from db, convert to display as trends, get average, get most frequent
 }

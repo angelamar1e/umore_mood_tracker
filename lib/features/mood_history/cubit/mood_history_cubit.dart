@@ -5,4 +5,6 @@ part 'mood_history_state.dart';
 
 class MoodHistoryCubit extends Cubit<MoodHistoryState> {
   MoodHistoryCubit() : super(MoodHistoryInitial(historyList: List.empty()));
+
+  //TODO: Methods - delete entry
 }
