@@ -109,7 +109,7 @@ class JournalEntry extends StatelessWidget {
             expands: true,
             textAlignVertical: TextAlignVertical.top,
             decoration: InputDecoration(
-              hintText: 'What made you feel this way?', // Placeholder text
+              hintText: 'What made you feel this way?',
               hintStyle: TextStyle(color: Colors.grey[800]),
               fillColor: Colors.white.withAlpha((0.2 * 255).toInt()),
               filled: true,
@@ -161,11 +161,11 @@ class ProgressDotIndicator extends StatelessWidget {
   }
 }
 
-// Button to navigate to the mood entry screen
+// Button to navigate to the home screen
 class GetStartedButton extends StatelessWidget {
-  const GetStartedButton({super.key, required this.context});
+  const GetStartedButton({super.key, required this.route});
 
-  final BuildContext context; // Build context for navigation
+  final String route;
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +173,7 @@ class GetStartedButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          context.goNamed('mood-entry'); // Navigate to mood entry screen
+          context.goNamed(route);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
@@ -192,7 +192,7 @@ class GetStartedButton extends StatelessWidget {
 class NextButton extends StatelessWidget {
   const NextButton({super.key, required this.cubit});
 
-  final MoodEntryCubit cubit; // Cubit to manage mood entry state
+  final MoodEntryCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +219,7 @@ class NextButton extends StatelessWidget {
 class ReturnButton extends StatelessWidget {
   const ReturnButton({super.key, required this.cubit});
 
-  final MoodEntryCubit cubit; // Cubit to manage navigation state
+  final MoodEntryCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -246,7 +246,7 @@ class ReturnButton extends StatelessWidget {
 class FinishButton extends StatelessWidget {
   const FinishButton({super.key, required this.cubit});
 
-  final MoodEntryCubit cubit; // Cubit to manage saving mood entry
+  final MoodEntryCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -254,13 +254,7 @@ class FinishButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () async {
-          final BuildContext currentContext = context; // Capture context before async gap
           await cubit.saveMoodEntry(); // Save mood entry data
-          Future.delayed(const Duration(seconds: 2), () {
-            if (currentContext.mounted) { // Check if still mounted before using context
-              currentContext.goNamed('mood-stats'); // Navigate to mood stats screen
-            }
-          });
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
@@ -277,7 +271,7 @@ class FinishButton extends StatelessWidget {
 
 // Widget to display main text with bold styling
 class MainText extends StatelessWidget {
-  final String text; // Text to display
+  final String text;
 
   const MainText({super.key, required this.text});
 
@@ -285,7 +279,6 @@ class MainText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      textAlign: TextAlign.center,
       style: TextStyle(
         fontSize: 26,
         fontWeight: FontWeight.bold,
@@ -303,10 +296,6 @@ class SubText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      textAlign: TextAlign.center,
-      style: TextStyle(fontSize: 14, color: Colors.grey[800]),
-    );
+    return Text(text, style: TextStyle(fontSize: 14, color: Colors.grey[800]));
   }
 }

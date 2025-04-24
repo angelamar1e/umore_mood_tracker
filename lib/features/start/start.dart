@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../../shared/widgets/widgets.dart';
+import 'package:umore_mood_tracker/shared/routes/app_routes.dart';
+import 'package:umore_mood_tracker/shared/widgets/widgets.dart';
 
 class Start extends StatefulWidget {
   const Start({super.key});
@@ -44,7 +45,6 @@ class _StartState extends State<Start> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // Set a gradient background for the screen
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -55,20 +55,20 @@ class _StartState extends State<Start> {
         child: SafeArea(
           child: Column(
             mainAxisAlignment:
-                MainAxisAlignment.center, // Center content vertically
+                MainAxisAlignment.center,
             crossAxisAlignment:
-                CrossAxisAlignment.stretch, // Stretch content horizontally
+                CrossAxisAlignment.stretch,
             children: [
-              emojiImages(), // Display the mood image
+              emojiImages(),
               Column(
                 children: [titleText(), subtitleText()],
-              ), // Display title and subtitle
-              SizedBox(height: 64), // Add spacing
+              ),
+              SizedBox(height: 64),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 48),
                 child: GetStartedButton(
-                  context: context,
-                ), // Display the "Get Started" button
+                  route: AppRoutes.home,
+                ),
               ),
             ],
           ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:umore_mood_tracker/features/mood_entry/cubit/mood_entry_cubit.dart';
+import 'package:umore_mood_tracker/shared/routes/app_routes.dart';
 import 'package:umore_mood_tracker/shared/widgets/widgets.dart';
 
 class MoodEntryView extends StatefulWidget {
@@ -24,9 +26,62 @@ class _MoodEntryViewState extends State<MoodEntryView> {
       builder: (context, state) {
         final cubit = context.read<MoodEntryCubit>();
 
-        // Show loading indicator during initialization
-        if (state is MoodEntryInitial) {
-          return Center(child: CircularProgressIndicator());
+        // Success state
+        if (state is MoodEntrySaved) {
+          // Add navigation after a delay
+          Future.delayed(const Duration(seconds: 2), () {
+            context.goNamed(AppRoutes.home);
+          });
+
+          return Scaffold(
+            body: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0xFF87CEEB), Color(0xFF4169E1)],
+                ),
+              ),
+              child: SafeArea(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 120,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.check, // Use check instead of check_circle
+                            color: Colors.white,
+                            size: 80,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 32),
+                      Text(
+                        'Mood Entry Saved!',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Returning to home...',
+                        style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
         }
 
         // Determine if the current step is the first step
@@ -50,7 +105,6 @@ class _MoodEntryViewState extends State<MoodEntryView> {
         return Scaffold(
           body: Container(
             decoration: BoxDecoration(
-              // Background gradient for the view
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -62,11 +116,8 @@ class _MoodEntryViewState extends State<MoodEntryView> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    // Progress indicator for mood entry steps
                     ProgressDotIndicator(isFirstStep: isFirstStep),
                     SizedBox(height: 16),
-                    if (!isFirstStep) SizedBox(height: 16),
-                    // Main text describing the current step
                     MainText(
                       text:
                           isFirstStep
@@ -74,7 +125,6 @@ class _MoodEntryViewState extends State<MoodEntryView> {
                               : 'Tell us more about your mood',
                     ),
                     SizedBox(height: 6),
-                    // Subtext providing additional instructions
                     SubText(
                       text:
                           isFirstStep
@@ -86,20 +136,17 @@ class _MoodEntryViewState extends State<MoodEntryView> {
                       child:
                           isFirstStep
                               ? MoodSelection(
-                                // Widget for selecting mood
                                 moodData: moodData,
                                 cubit: cubit,
                                 selectedIndex: selectedIndex,
                               )
                               : JournalEntry(
-                                // Widget for entering journal entry
                                 context: context,
                                 selectedIndex: selectedIndex,
                                 moodData: moodData,
                               ),
                     ),
                     SizedBox(height: 16),
-                    // Buttons for navigation based on step
                     if (isFirstStep && selectedIndex != -1)
                       NextButton(cubit: cubit)
                     else if (!isFirstStep)
