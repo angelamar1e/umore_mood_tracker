@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import '../../../shared/widgets/widgets.dart';
 
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+class Start extends StatefulWidget {
+  const Start({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<Start> createState() => _StartState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _StartState extends State<Start> {
   int _currentImageIndex = 0;
   late Timer _timer;
 
@@ -58,7 +58,7 @@ class _HomepageState extends State<Homepage> {
               SizedBox(height: 64),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 48),
-                child: startButton(context),
+                child: GetStartedButton(context: context),
               ),
             ],
           ),
@@ -93,19 +93,6 @@ class _HomepageState extends State<Homepage> {
         fontSize: 20,
         fontStyle: FontStyle.italic,
         color: Colors.white,
-      ),
-    );
-  }
-
-  FilledButton startButton(BuildContext context) {
-    return FilledButton(
-      onPressed: () {
-        context.goNamed('mood-entry');
-      },
-      style: FilledButton.styleFrom(backgroundColor: Colors.white),
-      child: Text(
-        'Get started',
-        style: TextStyle(fontSize: 18, color: Color(0xFF4169E1)),
       ),
     );
   }
