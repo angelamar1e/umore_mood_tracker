@@ -27,9 +27,36 @@ Future<void> insertEntry(MoodEntry entry) async {
   );
 }
 
-Future<void> deleteEntry(moodId) async {
+Future<void> deleteEntry(String entryId) async {
   // Get a reference to the database.
   final db = await getDatabase();
 
-  await db.delete('mood_entries', where: 'entry_id = ?', whereArgs: moodId);
+  await db.delete('mood_entries', where: 'entry_id = ?', whereArgs: [entryId]);
+}
+
+Future<List<MoodEntry>?> getHistory() async {
+  // Get a reference to the database.
+  final db = await getDatabase();
+  late List<MoodEntry> history = [];
+
+  final entries = await db.rawQuery("SELECT * FROM mood_entries");
+
+  for (final {
+        'entry_id': entryId as int,
+        'mood_key': moodKey as String,
+        'notes': notes as String,
+        'timestamp': timestamp as String,
+      }
+      in entries) {
+    history.add(
+      MoodEntry(
+        entryId: entryId,
+        moodKey: moodKey,
+        notes: notes,
+        timestamp: timestamp,
+      ),
+    );
+  }
+
+  return history.isNotEmpty ? history : null;
 }
