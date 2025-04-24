@@ -254,11 +254,15 @@ class FinishButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () async {
-          final BuildContext currentContext = context; // Capture context before async gap
+          final BuildContext currentContext =
+              context; // Capture context before async gap
           await cubit.saveMoodEntry(); // Save mood entry data
           Future.delayed(const Duration(seconds: 2), () {
-            if (currentContext.mounted) { // Check if still mounted before using context
-              currentContext.goNamed('mood-stats'); // Navigate to mood stats screen
+            if (currentContext.mounted) {
+              // Check if still mounted before using context
+              currentContext.goNamed(
+                'mood-stats',
+              ); // Navigate to mood stats screen
             }
           });
         },
