@@ -33,55 +33,7 @@ class _MoodEntryViewState extends State<MoodEntryView> {
             context.goNamed(AppRoutes.home);
           });
 
-          return Scaffold(
-            body: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xFF87CEEB), Color(0xFF4169E1)],
-                ),
-              ),
-              child: SafeArea(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 120,
-                        height: 120,
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.check, // Use check instead of check_circle
-                            color: Colors.white,
-                            size: 80,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 32),
-                      Text(
-                        'Mood Entry Saved!',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Returning to home...',
-                        style: TextStyle(fontSize: 16, color: Colors.grey[800]),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
+          return SuccessScreen();
         }
 
         // Determine if the current step is the first step
@@ -167,3 +119,4 @@ class _MoodEntryViewState extends State<MoodEntryView> {
     );
   }
 }
+

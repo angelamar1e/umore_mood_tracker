@@ -131,6 +131,211 @@ class JournalEntry extends StatelessWidget {
   }
 }
 
+class SuccessScreen extends StatelessWidget {
+  const SuccessScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF87CEEB), Color(0xFF4169E1)],
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.check, // Use check instead of check_circle
+                      color: Colors.white,
+                      size: 80,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 32),
+                Text(
+                  'Mood Entry Saved!',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Returning to home...',
+                  style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DayTimeline extends StatelessWidget {
+  final int selectedDayIndex;
+  final Function(int) onDaySelected;
+
+  const DayTimeline({
+    super.key,
+    required this.selectedDayIndex,
+    required this.onDaySelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final days = List.generate(7, (index) {
+      final day = now.add(Duration(days: index));
+      return {
+        'name':
+            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][day.weekday - 1],
+        'number': day.day.toString(),
+      };
+    });
+
+    return SizedBox(
+      height: 80,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: 7,
+        separatorBuilder: (context, index) => SizedBox(width: 8),
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () => onDaySelected(index),
+            child: Container(
+              width: 60,
+              decoration: BoxDecoration(
+                color:
+                    selectedDayIndex == index
+                        ? Color(0xFF4169E1)
+                        : Colors.white,
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    days[index]['name']!,
+                    style: TextStyle(
+                      color:
+                          selectedDayIndex == index
+                              ? Colors.white
+                              : Colors.grey,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 6),
+                  Text(
+                    days[index]['number']!,
+                    style: TextStyle(
+                      color:
+                          selectedDayIndex == index
+                              ? Colors.white
+                              : Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+        padding: EdgeInsets.zero,
+      ),
+    );
+  }
+}
+
+class CustomBottomNavBar extends StatelessWidget {
+  final int selectedIndex;
+  final Function(int) onItemSelected;
+
+  const CustomBottomNavBar({
+    super.key,
+    required this.selectedIndex,
+    required this.onItemSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      color: Colors.white,
+      height: 64,
+      padding: EdgeInsets.zero,
+      notchMargin: 8,
+      shape: CircularNotchedRectangle(),
+      child: Row(
+        children: [
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildNavBarItem(0, Icons.home, "Home"),
+                _buildNavBarItem(1, Icons.insights, "Stats"),
+              ],
+            ),
+          ),
+
+          SizedBox(width: 48),
+
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildNavBarItem(2, Icons.history, "History"),
+                _buildNavBarItem(3, Icons.settings, "Settings"),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavBarItem(int index, IconData icon, String label) {
+    return FittedBox(
+      child: Column(
+        children: [
+          IconButton(
+            onPressed: () => onItemSelected(index),
+            icon: Icon(icon),
+            color: selectedIndex == index ? Color(0xFF4169E1) : Colors.black,
+            iconSize: 28,
+            padding: EdgeInsets.zero,
+            constraints: BoxConstraints(),
+          ),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: selectedIndex == index ? Color(0xFF4169E1) : Colors.black,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 // Widget to display progress indicators for mood entry steps
 class ProgressDotIndicator extends StatelessWidget {
   const ProgressDotIndicator({super.key, required this.isFirstStep});
