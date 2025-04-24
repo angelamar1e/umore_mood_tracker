@@ -34,7 +34,7 @@ Future<void> deleteEntry(String entryId) async {
   await db.delete('mood_entries', where: 'entry_id = ?', whereArgs: [entryId]);
 }
 
-Future<List<MoodEntry>?> getHistory() async {
+Future<List<MoodEntry>?> fetchHistory() async {
   // Get a reference to the database.
   final db = await getDatabase();
   late List<MoodEntry> history = [];
