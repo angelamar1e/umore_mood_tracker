@@ -3,7 +3,7 @@ part of 'mood_stats_cubit.dart';
 
 class MoodStatsState {
   final List<MoodEntry> trends;
-  final Mood average;
+  final double average;
   final Mood mostFrequent;
 
   MoodStatsState({

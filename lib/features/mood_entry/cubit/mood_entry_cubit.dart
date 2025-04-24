@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:umore_mood_tracker/features/mood_entry/models/mood_entry.dart';
 import 'package:umore_mood_tracker/shared/database/database_helper.dart';
@@ -5,22 +6,41 @@ import 'package:umore_mood_tracker/shared/database/database_helper.dart';
 part 'mood_entry_state.dart';
 
 class MoodEntryCubit extends Cubit<MoodEntryState> {
-  MoodEntryCubit()
-    : super(
-        MoodEntryInitial(
-          recentEntry: MoodEntry(
-            entryId: null,
-            moodKey: '',
-            notes: '',
-            timestamp: '',
-          ),
-        ),
-      );
+  MoodEntryCubit() : super(MoodEntryState(
+    status: MoodEntryStatus.inMoodSelection,
+    selectedMood: -1,
+    notes: '',
+  ));
+  
+  final TextEditingController notesController = TextEditingController();
 
-  void addEntry(MoodEntry moodEntry) {
-    // emits recent entry to state
-    emit(state.copyWith(entry: moodEntry));
+  void startMoodSelection(){
+    emit(state.copyWith(status: MoodEntryStatus.inMoodSelection));
+  }
+
+  void startNoteEntry(){
+    emit(state.copyWith(status: MoodEntryStatus.inNoteEntry));
+  }
+
+  void completeMoodEntry() {
+    storeEntry();
+    emit(state.copyWith(status: MoodEntryStatus.completed));
+  }
+
+  void selectMood(int index){
+    emit(state.copyWith(selectedMood: index));
+  }
+
+  void addNotes(String text){
+    emit(state.copyWith(notes: text));
+  }
+
+  void storeEntry() async {
+    final int moodId = state.selectedMood;
+    final String notes = state.notes;
+    final String timestamp = DateTime.now().toString();
+    
     // inserts to db table
-    insertEntry(moodEntry);
+    await insertEntry(MoodEntry(entryId: null, moodId: moodId, notes: notes, timestamp: timestamp));
   }
 }

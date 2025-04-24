@@ -7,7 +7,7 @@ Future<Database> getDatabase() async {
     join(await getDatabasesPath(), 'users_database.db'),
     onCreate: (db, version) {
       return db.execute(
-        'CREATE TABLE mood_entries(entry_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, mood_key TEXT, notes TEXT, timestamp TEXT)',
+        'CREATE TABLE mood_entries(entry_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, mood_id INTEGER, notes TEXT, timestamp TEXT)',
       );
     },
     version: 1,
@@ -43,7 +43,7 @@ Future<List<MoodEntry>?> fetchHistory() async {
 
   for (final {
         'entry_id': entryId as int,
-        'mood_key': moodKey as String,
+        'mood_id': moodId as int,
         'notes': notes as String,
         'timestamp': timestamp as String,
       }
@@ -51,7 +51,7 @@ Future<List<MoodEntry>?> fetchHistory() async {
     history.add(
       MoodEntry(
         entryId: entryId,
-        moodKey: moodKey,
+        moodId: moodId,
         notes: notes,
         timestamp: timestamp,
       ),
@@ -61,17 +61,17 @@ Future<List<MoodEntry>?> fetchHistory() async {
   return history.isNotEmpty ? history : null;
 }
 
-Future<Map<String, int>> countByMood() async {
+Future<Map<int, int>> countByMood() async {
   // Get a reference to the database.
   final db = await getDatabase();
-  late Map<String, int> moodEntriesCount = {};
+  late Map<int, int> moodEntriesCount = {};
 
   final entries = await db.rawQuery(
-    "SELECT moodKey, COUNT() as count FROM mood_entries GROUP BY moodKey",
+    "SELECT mood_id, COUNT() as count FROM mood_entries GROUP BY moodKey",
   );
 
-  for (final {'moodKey': moodKey as String, 'count': count as int} in entries) {
-    moodEntriesCount.addAll({moodKey: count});
+  for (final {'moodId': moodId as int, 'count': count as int} in entries) {
+    moodEntriesCount.addAll({moodId: count});
   }
 
   return moodEntriesCount;

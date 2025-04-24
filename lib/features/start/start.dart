@@ -67,7 +67,7 @@ class _StartState extends State<Start> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 48),
                 child: GetStartedButton(
-                  context: context,
+                  context
                 ), // Display the "Get Started" button
               ),
             ],

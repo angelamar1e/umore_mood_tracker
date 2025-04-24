@@ -2,18 +2,86 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:umore_mood_tracker/features/mood_entry/cubit/mood_entry_cubit.dart';
+import 'package:umore_mood_tracker/shared/constants/mood_types.dart';
+
+class CustomBottomNavBar extends StatelessWidget {
+  final int selectedIndex;
+  final Function(int) onItemSelected;
+
+  const CustomBottomNavBar({
+    super.key,
+    required this.selectedIndex,
+    required this.onItemSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      color: Colors.white,
+      height: 64,
+      padding: EdgeInsets.zero,
+      notchMargin: 8,
+      shape: CircularNotchedRectangle(),
+      child: Row(
+        children: [
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildNavBarItem(0, Icons.home, "Home"),
+                _buildNavBarItem(1, Icons.insights, "Stats"),
+              ],
+            ),
+          ),
+
+          SizedBox(width: 48),
+
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildNavBarItem(2, Icons.history, "History"),
+                _buildNavBarItem(3, Icons.settings, "Settings"),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavBarItem(int index, IconData icon, String label) {
+    return FittedBox(
+      child: Column(
+        children: [
+          IconButton(
+            onPressed: () => onItemSelected(index),
+            icon: Icon(icon),
+            color: selectedIndex == index ? Color(0xFF4169E1) : Colors.black,
+            iconSize: 28,
+            padding: EdgeInsets.zero,
+            constraints: BoxConstraints(),
+          ),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: selectedIndex == index ? Color(0xFF4169E1) : Colors.black,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 // Widget for selecting a mood with visual feedback
 class MoodSelection extends StatelessWidget {
-  const MoodSelection({
+  const MoodSelection(this.cubit, {
     super.key,
-    required this.moodData,
-    required this.cubit,
     required this.selectedIndex,
   });
 
-  final List<Map<String, dynamic>>
-  moodData; // List of mood data containing image and description
   final MoodEntryCubit cubit; // Cubit to manage mood selection state
   final int selectedIndex; // Index of the currently selected mood
 
@@ -28,7 +96,7 @@ class MoodSelection extends StatelessWidget {
             FittedBox(
               child: Row(
                 children: List.generate(
-                  moodData.length,
+                  moodTypes.length,
                   (index) => GestureDetector(
                     onTap: () {
                       cubit.selectMood(index); // Update selected mood index
@@ -44,7 +112,7 @@ class MoodSelection extends StatelessWidget {
                                 ? 1.5
                                 : 1.0, // Scale selected mood
                         child: Image.asset(
-                          moodData[index]['image'], // Display mood image
+                          moodTypes[index].image, // Display mood image
                           width: 100,
                           height: 100,
                         ),
@@ -59,7 +127,7 @@ class MoodSelection extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    moodData[selectedIndex]['description'], // Display mood description
+                    moodTypes[selectedIndex].description, // Display mood description
                     style: TextStyle(fontSize: 18, color: Colors.black),
                     textAlign: TextAlign.center,
                   ),
@@ -74,16 +142,13 @@ class MoodSelection extends StatelessWidget {
 
 // Widget for entering a journal entry related to the selected mood
 class JournalEntry extends StatelessWidget {
-  const JournalEntry({
+  const JournalEntry(this.context, {
     super.key,
-    required this.context,
     required this.selectedIndex,
-    required this.moodData,
   });
 
   final BuildContext context; // Build context for the widget
   final int selectedIndex; // Index of the selected mood
-  final List<Map<String, dynamic>> moodData; // List of mood data
 
   @override
   Widget build(BuildContext context) {
@@ -93,18 +158,18 @@ class JournalEntry extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(
-          moodData[selectedIndex]['image'],
+          moodTypes[selectedIndex].image,
           width: 100,
           height: 100,
         ), // Display selected mood image
         Text(
-          '${moodData[selectedIndex]['description']}', // Display selected mood description
+          moodTypes[selectedIndex].description, // Display selected mood description
           style: TextStyle(color: Colors.black, fontSize: 18),
         ),
         SizedBox(height: 24),
         Expanded(
           child: TextField(
-            controller: cubit.journalController, // Controller for journal text
+            controller: cubit.notesController, // Controller for journal text
             maxLines: null,
             expands: true,
             textAlignVertical: TextAlignVertical.top,
@@ -123,7 +188,7 @@ class JournalEntry extends StatelessWidget {
             keyboardType: TextInputType.multiline,
             onChanged:
                 (text) =>
-                    cubit.addJournalText(text), // Update journal text in cubit
+                    cubit.addNotes(text), // Update journal text in cubit
           ),
         ),
       ],
@@ -163,16 +228,18 @@ class ProgressDotIndicator extends StatelessWidget {
 
 // Button to navigate to the mood entry screen
 class GetStartedButton extends StatelessWidget {
-  const GetStartedButton({super.key, required this.context});
+  const GetStartedButton(this.context, {super.key});
 
   final BuildContext context; // Build context for navigation
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<MoodEntryCubit>();
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
+          cubit.startMoodSelection();
           context.goNamed('mood-entry'); // Navigate to mood entry screen
         },
         style: ElevatedButton.styleFrom(
@@ -200,7 +267,7 @@ class NextButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          cubit.completeSelectMoodEntry(); // Complete mood selection step
+          cubit.startNoteEntry(); // Complete mood selection step, and start note entry
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
@@ -228,8 +295,7 @@ class ReturnButton extends StatelessWidget {
       child: OutlinedButton.icon(
         onPressed:
             () =>
-                cubit
-                    .goBackToMoodSelection(), // Navigate back to mood selection
+                cubit.startMoodSelection(), // Navigate back to mood selection
         icon: Icon(Icons.arrow_back_ios_new, size: 18),
         style: OutlinedButton.styleFrom(
           padding: EdgeInsets.symmetric(vertical: 14),
@@ -256,12 +322,12 @@ class FinishButton extends StatelessWidget {
         onPressed: () async {
           final BuildContext currentContext =
               context; // Capture context before async gap
-          await cubit.saveMoodEntry(); // Save mood entry data
+              cubit.completeMoodEntry(); // Save mood entry data
           Future.delayed(const Duration(seconds: 2), () {
             if (currentContext.mounted) {
               // Check if still mounted before using context
               currentContext.goNamed(
-                'mood-stats',
+                'home',
               ); // Navigate to mood stats screen
             }
           });
