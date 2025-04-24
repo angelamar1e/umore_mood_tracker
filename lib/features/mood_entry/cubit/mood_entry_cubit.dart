@@ -1,9 +1,6 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:umore_mood_tracker/features/mood_entry/models/mood.dart';
 import 'package:umore_mood_tracker/features/mood_entry/models/mood_entry.dart';
+import 'package:umore_mood_tracker/shared/database/database_helper.dart';
 
 part 'mood_entry_state.dart';
 
@@ -11,16 +8,13 @@ class MoodEntryCubit extends Cubit<MoodEntryState> {
   MoodEntryCubit()
     : super(
         MoodEntryInitial(
-          entry: MoodEntry(
-            mood: Mood(
-              image: FileImage(File('lib/shared/assets/images/happy_face.png')),
-              description: '',
-            ),
-            notes: '',
-            timestamp: DateTime(2025),
-          ),
+          recentEntry: MoodEntry(moodKey: '', notes: '', timestamp: ''),
         ),
       );
 
-  //TODO: Methods - add entry
+  void addEntry(MoodEntry moodEntry) {
+    // emits recent entry to state
+    emit(state.copyWith(entry: moodEntry));
+    insertEntry(moodEntry);
+  }
 }

@@ -2,15 +2,15 @@
 part of 'mood_entry_cubit.dart';
 
 class MoodEntryState {
-  final MoodEntry entry;
+  final MoodEntry recentEntry;
 
-  MoodEntryState({required this.entry});
+  MoodEntryState({required this.recentEntry});
 
   MoodEntryState copyWith({MoodEntry? entry}) {
-    return MoodEntryState(entry: entry ?? this.entry);
+    return MoodEntryState(recentEntry: entry ?? recentEntry);
   }
 }
 
 final class MoodEntryInitial extends MoodEntryState {
-  MoodEntryInitial({required super.entry});
+  MoodEntryInitial({required super.recentEntry});
 }
