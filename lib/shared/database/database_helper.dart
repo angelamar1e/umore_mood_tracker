@@ -26,3 +26,10 @@ Future<void> insertEntry(MoodEntry entry) async {
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 }
+
+Future<void> deleteEntry(moodId) async {
+  // Get a reference to the database.
+  final db = await getDatabase();
+
+  await db.delete('mood_entries', where: 'entry_id = ?', whereArgs: moodId);
+}
