@@ -10,9 +10,10 @@ class Start extends StatefulWidget {
 }
 
 class _StartState extends State<Start> {
-  int _currentImageIndex = 0;
-  late Timer _timer;
+  int _currentImageIndex = 0; // Tracks the current index of the mood image
+  late Timer _timer; // Timer to periodically update the image index
 
+  // List of mood image paths
   final List<String> _moodImages = [
     'lib/shared/assets/images/happy_face.png',
     'lib/shared/assets/images/sad_face.png',
@@ -24,6 +25,7 @@ class _StartState extends State<Start> {
   @override
   void initState() {
     super.initState();
+    // Initialize the timer to update the image index every 500ms
     _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
       setState(() {
         _currentImageIndex = (_currentImageIndex + 1) % _moodImages.length;
@@ -33,6 +35,7 @@ class _StartState extends State<Start> {
 
   @override
   void dispose() {
+    // Cancel the timer when the widget is disposed
     _timer.cancel();
     super.dispose();
   }
@@ -41,6 +44,7 @@ class _StartState extends State<Start> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        // Set a gradient background for the screen
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -50,15 +54,21 @@ class _StartState extends State<Start> {
         ),
         child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment:
+                MainAxisAlignment.center, // Center content vertically
+            crossAxisAlignment:
+                CrossAxisAlignment.stretch, // Stretch content horizontally
             children: [
-              emojiImages(),
-              Column(children: [titleText(), subtitleText()]),
-              SizedBox(height: 64),
+              emojiImages(), // Display the mood image
+              Column(
+                children: [titleText(), subtitleText()],
+              ), // Display title and subtitle
+              SizedBox(height: 64), // Add spacing
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 48),
-                child: GetStartedButton(context: context),
+                child: GetStartedButton(
+                  context: context,
+                ), // Display the "Get Started" button
               ),
             ],
           ),
@@ -67,6 +77,7 @@ class _StartState extends State<Start> {
     );
   }
 
+  // Widget to display the current mood image
   Image emojiImages() {
     return Image.asset(
       _moodImages[_currentImageIndex],
@@ -75,6 +86,7 @@ class _StartState extends State<Start> {
     );
   }
 
+  // Widget to display the title text
   Text titleText() {
     return Text(
       'UMORE',
@@ -86,6 +98,7 @@ class _StartState extends State<Start> {
     );
   }
 
+  // Widget to display the subtitle text
   Text subtitleText() {
     return Text(
       'Track yourself more',

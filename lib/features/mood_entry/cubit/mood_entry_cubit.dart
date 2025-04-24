@@ -6,8 +6,10 @@ part 'mood_entry_state.dart';
 class MoodEntryCubit extends Cubit<MoodEntryState> {
   MoodEntryCubit() : super(MoodEntryInitial());
 
+  // Controller for journal text input
   final TextEditingController journalController = TextEditingController();
 
+  // List of predefined mood data with type, image, name, and description
   final List<Map<String, dynamic>> moodData = [
     {
       'type': MoodType.happy,
@@ -41,10 +43,12 @@ class MoodEntryCubit extends Cubit<MoodEntryState> {
     },
   ];
 
+  // Initializes the mood entry process with default values
   void initMoodEntry() {
     emit(MoodEntryInProgress(selectedMoodIndex: -1, moodData: moodData));
   }
 
+  // Updates the selected mood index
   void selectMood(int index) {
     if (state is MoodEntryInProgress) {
       emit((state as MoodEntryInProgress).copyWith(selectedMoodIndex: index));
@@ -53,6 +57,7 @@ class MoodEntryCubit extends Cubit<MoodEntryState> {
     }
   }
 
+  // Completes the mood selection and transitions to the next state
   void completeSelectMoodEntry() {
     if (state is MoodEntryInProgress) {
       final currentState = state as MoodEntryInProgress;
@@ -68,12 +73,14 @@ class MoodEntryCubit extends Cubit<MoodEntryState> {
     }
   }
 
+  // Adds journal text to the current state
   void addJournalText(String text) {
     if (state is MoodEntryComplete) {
       emit((state as MoodEntryComplete).copyWith(journalText: text));
     }
   }
 
+  // Saves the mood entry (placeholder for database implementation)
   Future<void> saveMoodEntry() async {
     if (state is MoodEntryComplete) {
       final currentState = state as MoodEntryComplete;
@@ -83,8 +90,6 @@ class MoodEntryCubit extends Cubit<MoodEntryState> {
       // final selectedMood =
       //     currentState.moodData[currentState.selectedMoodIndex];
       // final journalText = currentState.journalText;
-
-      
 
       emit(
         MoodEntrySaved(
@@ -96,6 +101,7 @@ class MoodEntryCubit extends Cubit<MoodEntryState> {
     }
   }
 
+  // Retrieves the selected mood type based on the current state
   MoodType? getSelectedMoodType() {
     if (state is MoodEntryInProgress) {
       final currentState = state as MoodEntryInProgress;
@@ -107,6 +113,7 @@ class MoodEntryCubit extends Cubit<MoodEntryState> {
     return null;
   }
 
+  // Reverts back to the mood selection state
   void goBackToMoodSelection() {
     if (state is MoodEntryComplete) {
       final currentState = state as MoodEntryComplete;
