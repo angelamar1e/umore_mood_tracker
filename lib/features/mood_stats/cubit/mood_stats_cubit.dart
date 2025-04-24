@@ -17,5 +17,7 @@ class MoodStatsCubit extends Cubit<MoodStatsState> {
         ),
       );
 
-  //TODO: Methods - get history list from db, convert to display as trends, get average, get most frequent
+  /*TODO: Methods - get history list from db, convert to display as trends, get average, get most frequent 
+
+  */
 }

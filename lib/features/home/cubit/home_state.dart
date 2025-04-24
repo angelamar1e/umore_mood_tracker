@@ -1,5 +1,7 @@
 part of 'home_cubit.dart';
 
-class HomeState {}
+class HomeState {
+  //TODO: currentWeekRecord
+}
 
 final class HomeInitial extends HomeState {}
