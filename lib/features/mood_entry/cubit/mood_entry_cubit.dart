@@ -8,13 +8,19 @@ class MoodEntryCubit extends Cubit<MoodEntryState> {
   MoodEntryCubit()
     : super(
         MoodEntryInitial(
-          recentEntry: MoodEntry(moodKey: '', notes: '', timestamp: ''),
+          recentEntry: MoodEntry(
+            entryId: null,
+            moodKey: '',
+            notes: '',
+            timestamp: '',
+          ),
         ),
       );
 
   void addEntry(MoodEntry moodEntry) {
     // emits recent entry to state
     emit(state.copyWith(entry: moodEntry));
+    // inserts to db table
     insertEntry(moodEntry);
   }
 }

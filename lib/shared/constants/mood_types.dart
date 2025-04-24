@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:umore_mood_tracker/features/mood_entry/models/mood.dart';
 
-Map<String, Mood> moodTypes = {
+final Map<String, Mood> moodTypes = {
   'crying': Mood(
     image: FileImage(File('lib/shared/assets/images/crying_face.png')),
     description: "I can't take this!",
