@@ -60,3 +60,19 @@ Future<List<MoodEntry>?> fetchHistory() async {
 
   return history.isNotEmpty ? history : null;
 }
+
+Future<Map<String, int>?> countByMood() async {
+  // Get a reference to the database.
+  final db = await getDatabase();
+  late Map<String, int> moodEntriesCount = {};
+
+  final entries = await db.rawQuery(
+    "SELECT moodKey, COUNT() as count FROM mood_entries GROUP BY moodKey",
+  );
+
+  for (final {'moodKey': moodKey as String, 'count': count as int} in entries) {
+    moodEntriesCount.addAll({moodKey: count});
+  }
+
+  return moodEntriesCount.isNotEmpty ? moodEntriesCount : null;
+}
