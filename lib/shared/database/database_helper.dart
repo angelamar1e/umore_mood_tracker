@@ -61,7 +61,7 @@ Future<List<MoodEntry>?> fetchHistory() async {
   return history.isNotEmpty ? history : null;
 }
 
-Future<Map<String, int>?> countByMood() async {
+Future<Map<String, int>> countByMood() async {
   // Get a reference to the database.
   final db = await getDatabase();
   late Map<String, int> moodEntriesCount = {};
@@ -74,5 +74,5 @@ Future<Map<String, int>?> countByMood() async {
     moodEntriesCount.addAll({moodKey: count});
   }
 
-  return moodEntriesCount.isNotEmpty ? moodEntriesCount : null;
+  return moodEntriesCount;
 }

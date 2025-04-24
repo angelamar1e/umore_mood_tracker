@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:umore_mood_tracker/features/mood_entry/models/mood.dart';
 import 'package:umore_mood_tracker/features/mood_entry/models/mood_entry.dart';
-import 'package:umore_mood_tracker/features/mood_stats/models/pie_scction_data.dart';
+import 'package:umore_mood_tracker/features/mood_stats/models/pie_section_data.dart';
 import 'package:umore_mood_tracker/shared/constants/mood_types.dart';
 import 'package:umore_mood_tracker/shared/database/database_helper.dart';
 
