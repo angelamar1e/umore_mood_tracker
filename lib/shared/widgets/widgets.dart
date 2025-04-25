@@ -190,12 +190,10 @@ class SuccessScreen extends StatelessWidget {
 
 class DayTimeline extends StatelessWidget {
   final int selectedDayIndex;
-  final Function(int) onDaySelected;
 
   const DayTimeline({
     super.key,
     required this.selectedDayIndex,
-    required this.onDaySelected,
   });
 
   @override
@@ -217,45 +215,36 @@ class DayTimeline extends StatelessWidget {
         itemCount: 7,
         separatorBuilder: (context, index) => SizedBox(width: 8),
         itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () => onDaySelected(index),
-            child: Container(
-              width: 60,
-              decoration: BoxDecoration(
-                color:
-                    selectedDayIndex == index
-                        ? Color(0xFF4169E1)
-                        : Colors.white,
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    days[index]['name']!,
-                    style: TextStyle(
-                      color:
-                          selectedDayIndex == index
-                              ? Colors.white
-                              : Colors.grey,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
+          return Container(
+            width: 60,
+            decoration: BoxDecoration(
+              color:
+                  selectedDayIndex == index ? Color(0xFF4169E1) : Colors.white,
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  days[index]['name']!,
+                  style: TextStyle(
+                    color:
+                        selectedDayIndex == index ? Colors.white : Colors.grey,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
                   ),
-                  SizedBox(height: 6),
-                  Text(
-                    days[index]['number']!,
-                    style: TextStyle(
-                      color:
-                          selectedDayIndex == index
-                              ? Colors.white
-                              : Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  days[index]['number']!,
+                  style: TextStyle(
+                    color:
+                        selectedDayIndex == index ? Colors.white : Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },

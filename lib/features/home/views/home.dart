@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:umore_mood_tracker/shared/routes/app_routes.dart';
 import 'package:umore_mood_tracker/shared/widgets/widgets.dart';
 
 class Home extends StatefulWidget {
@@ -12,7 +13,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String name = "Name";
   int _selectedIndex = 0;
-  int _selectedDayIndex = 0;
+  final _selectedDayIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +38,7 @@ class _HomeState extends State<Home> {
                   SizedBox(height: 24),
 
                   // Day selector
-                  DayTimeline(
-                    selectedDayIndex: _selectedDayIndex,
-                    onDaySelected: (index) {
-                      setState(() => _selectedDayIndex = index);
-                    },
-                  ),
+                  DayTimeline(selectedDayIndex: _selectedDayIndex),
                 ],
               ),
             ),
@@ -70,7 +66,21 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: CustomBottomNavBar(
         selectedIndex: _selectedIndex,
         onItemSelected: (index) {
-          setState(() => _selectedIndex = index);
+          if (index == _selectedIndex) return;
+          switch (index) {
+            case 0:
+              context.goNamed(AppRoutes.home);
+              break;
+            case 1:
+              context.goNamed(AppRoutes.moodStats);
+              break;
+            case 2:
+              context.goNamed(AppRoutes.moodHistory);
+              break;
+            case 3:
+              context.goNamed(AppRoutes.settings);
+              break;
+          }
         },
       ),
     );
