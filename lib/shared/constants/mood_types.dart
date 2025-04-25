@@ -9,16 +9,13 @@ final List<Mood> moodTypes = [
     image: 'lib/shared/assets/images/angry_face.png',
     description: "I'm frustrated",
   ),
-Mood(
+  Mood(
     image: 'lib/shared/assets/images/sad_face.png',
-    description: "Meh",
-  ),
-Mood(
-    image: 'lib/shared/assets/images/neutral_face.png',
     description: "I'm not okay",
   ),
- Mood(
+  Mood(image: 'lib/shared/assets/images/neutral_face.png', description: "Meh"),
+  Mood(
     image: 'lib/shared/assets/images/happy_face.png',
     description: "I'm feeling good!",
-  )
+  ),
 ];
