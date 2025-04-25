@@ -69,12 +69,28 @@ Future<Map<int, int>> countByMood() async {
   late Map<int, int> moodEntriesCount = {};
 
   final entries = await db.rawQuery(
-    "SELECT mood_id, COUNT() as count FROM mood_entries GROUP BY moodKey",
+    "SELECT mood_id, COUNT() as count FROM mood_entries GROUP BY mood_id",
   );
 
-  for (final {'moodId': moodId as int, 'count': count as int} in entries) {
+  for (final {'mood_id': moodId as int, 'count': count as int} in entries) {
     moodEntriesCount.addAll({moodId: count});
   }
 
   return moodEntriesCount;
+}
+
+Future<double> getAveMood() async {
+  // Get a reference to the database.
+  final db = await getDatabase();
+  late double averageMood = 0.0;
+
+  final entries = await db.rawQuery(
+    "SELECT AVG(mood_id) as average FROM mood_entries",
+  );
+
+  for (final {'average': average as double} in entries) {
+    averageMood = average;
+  }
+
+  return averageMood;
 }
