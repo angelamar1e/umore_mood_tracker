@@ -43,6 +43,16 @@ class MoodHistoryCubit extends Cubit<MoodHistoryState> {
     emit(state.copyWith(historyList: fullHistoryList));
   }
 
+  void deleteEntry(int entryId) async {
+    // Remove the entry from the current state list
+    final updatedList =
+        state.historyList.where((entry) => entry.entryId != entryId).toList();
+    emit(state.copyWith(historyList: updatedList));
+
+    // Delete the entry from the database
+    await delete(entryId);
+  }
+
   // get moodtype from moodId
   Mood getMoodType(int moodId) {
     return moodTypes.where((mood) => moodTypes.indexOf(mood) == moodId).first;
