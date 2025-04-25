@@ -23,10 +23,6 @@ class MoodStatsCubit extends Cubit<MoodStatsState> {
     getMostFrequentMood();
   }
 
-  /*TODO: Methods - get history list from db, convert to display as trends, get average, get most frequent 
-
-  */
-
   void getChartData() async {
     final moodTypeCount = await countByMood();
     late List<PieSectionData> pieChartData = [];

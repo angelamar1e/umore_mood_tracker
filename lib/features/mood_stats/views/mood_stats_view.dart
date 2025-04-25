@@ -10,7 +10,6 @@ class MoodStatsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MoodStatsCubit, MoodStatsState>(
       builder: (context, state) {
-        final cubit = context.read<MoodStatsCubit>();
         final pieChartData = state.trends;
 
         return Scaffold(
