@@ -2,11 +2,11 @@
 part of 'mood_history_cubit.dart';
 
 class MoodHistoryState {
-  final List<MoodEntry> historyList;
+  final List<MoodHistoryEntry> historyList;
 
   MoodHistoryState({required this.historyList});
 
-  MoodHistoryState copyWith({List<MoodEntry>? historyList}) {
+  MoodHistoryState copyWith({List<MoodHistoryEntry>? historyList}) {
     return MoodHistoryState(historyList: historyList ?? this.historyList);
   }
 }
