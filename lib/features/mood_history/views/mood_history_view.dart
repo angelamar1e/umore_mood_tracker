@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:umore_mood_tracker/features/mood_history/cubit/mood_history_cubit.dart';
-import 'package:umore_mood_tracker/shared/database/database_helper.dart';
 
 class MoodHistoryView extends StatelessWidget {
   const MoodHistoryView({super.key});
