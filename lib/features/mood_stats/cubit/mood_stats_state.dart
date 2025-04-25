@@ -2,21 +2,38 @@
 part of 'mood_stats_cubit.dart';
 
 class MoodStatsState {
-  final List<MoodEntry> trends;
-  final double average;
-  final Mood mostFrequent;
+  final List<PieSectionData> trends;
+  final Mood? averageMoodType;
+  final double? averageMoodScore;
+  final Mood? mostFrequent;
 
   MoodStatsState({
     required this.trends,
-    required this.average,
+    required this.averageMoodType,
+    required this.averageMoodScore,
     required this.mostFrequent,
   });
+
+  MoodStatsState copyWith({
+    List<PieSectionData>? trends,
+    Mood? averageMoodType,
+    double? averageMoodScore,
+    Mood? mostFrequent,
+  }) {
+    return MoodStatsState(
+      trends: trends ?? this.trends,
+      averageMoodType: averageMoodType ?? this.averageMoodType,
+      averageMoodScore: averageMoodScore ?? this.averageMoodScore,
+      mostFrequent: mostFrequent ?? this.mostFrequent,
+    );
+  }
 }
 
 final class MoodStatsInitial extends MoodStatsState {
   MoodStatsInitial({
     required super.trends,
-    required super.average,
+    required super.averageMoodType,
+    required super.averageMoodScore,
     required super.mostFrequent,
   });
 }
