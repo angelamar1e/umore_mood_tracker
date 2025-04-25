@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:umore_mood_tracker/features/mood_entry/cubit/mood_entry_cubit.dart';
+import 'package:umore_mood_tracker/features/mood_entry/widgets/mood_entry_widgets.dart';
 import 'package:umore_mood_tracker/shared/widgets/widgets.dart';
 
 class MoodEntryView extends StatelessWidget {

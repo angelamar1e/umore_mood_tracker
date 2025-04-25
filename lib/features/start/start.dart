@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:path/path.dart';
+import 'package:umore_mood_tracker/shared/routes/app_routes.dart';
 import 'package:umore_mood_tracker/shared/widgets/widgets.dart';
 
 class Start extends StatefulWidget {
@@ -63,8 +66,16 @@ class _StartState extends State<Start> {
               SizedBox(height: 64),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 48),
-                child: GetStartedButton(
-                  context,
+                child: CustomButton(
+                  text: 'Get Started',
+                  route: AppRoutes.home,
+                  textStyle: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  backgroundColor: Colors.white,
+                  foregroundColor: Color(0xFF4169E1),
+                  padding: EdgeInsets.symmetric(vertical: 14),
                 ), // Display the "Get Started" button
               ),
             ],

@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:umore_mood_tracker/features/home/widgets/home_widgets.dart';
 import 'package:umore_mood_tracker/shared/routes/app_routes.dart';
 import 'package:umore_mood_tracker/shared/widgets/widgets.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({super.key});
 
-  @override
-  State<Home> createState() => _HomeState();
-}
+  final String name = "Name";
 
-class _HomeState extends State<Home> {
-  String name = "Name";
-  int _selectedIndex = 0;
+  final _selectedIndex = 0;
+
   final _selectedDayIndex = 0;
 
   @override
@@ -38,7 +36,10 @@ class _HomeState extends State<Home> {
                   SizedBox(height: 24),
 
                   // Day selector
-                  DayTimeline(selectedDayIndex: _selectedDayIndex),
+                  DayTimeline(
+                    selectedDayIndex: _selectedDayIndex,
+                    hasData: true,
+                  ),
                 ],
               ),
             ),
