@@ -16,7 +16,7 @@ Future<Database> getDatabase() async {
   return database;
 }
 
-Future<void> insertEntry(MoodEntry entry) async {
+Future<void> insert(MoodEntry entry) async {
   // Get a reference to the database.
   final db = await getDatabase();
 
@@ -27,7 +27,7 @@ Future<void> insertEntry(MoodEntry entry) async {
   );
 }
 
-Future<void> deleteEntry(String entryId) async {
+Future<void> delete(int entryId) async {
   // Get a reference to the database.
   final db = await getDatabase();
 
