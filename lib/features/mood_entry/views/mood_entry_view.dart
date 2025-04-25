@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:umore_mood_tracker/features/mood_entry/cubit/mood_entry_cubit.dart';
 import 'package:umore_mood_tracker/shared/widgets/widgets.dart';
 
@@ -12,18 +13,25 @@ class MoodEntryView extends StatelessWidget {
       builder: (context, state) {
         final cubit = context.read<MoodEntryCubit>();
 
-        // return loading indicator if the state is still initial
-        if (state.status == MoodEntryStatus.initial) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        final bool isFirstStep = state.status == MoodEntryStatus.inMoodSelection;
+        final bool isFirstStep =
+            state.status == MoodEntryStatus.inMoodSelection;
 
         int selectedIndex = state.selectedMood;
 
+        if (state.status == MoodEntryStatus.completed) {
+          Future.delayed(const Duration(seconds: 1), () {
+            if (context.mounted) {
+              // Check if still mounted before using context
+              context.goNamed('home'); // Navigate to mood stats screen
+            }
+          });
+
+          return SuccessScreen();
+        }
+
         return Scaffold(
           body: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -36,15 +44,14 @@ class MoodEntryView extends StatelessWidget {
                 child: Column(
                   children: [
                     ProgressDotIndicator(isFirstStep: isFirstStep),
-                    const SizedBox(height: 16),
-                    if (!isFirstStep) const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     MainText(
                       text:
                           isFirstStep
                               ? 'How are you feeling today?'
                               : 'Tell us more about your mood',
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6),
                     SubText(
                       text:
                           isFirstStep
@@ -64,7 +71,7 @@ class MoodEntryView extends StatelessWidget {
                                 selectedIndex: selectedIndex,
                               ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     if (isFirstStep && selectedIndex != -1)
                       NextButton(cubit: cubit)
                     else if (!isFirstStep)

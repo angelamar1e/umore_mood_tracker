@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:umore_mood_tracker/features/mood_entry/models/mood_entry.dart';
-import 'package:umore_mood_tracker/shared/database/database_helper.dart';
 import 'package:umore_mood_tracker/shared/widgets/widgets.dart';
 
 class Home extends StatefulWidget {
@@ -36,28 +34,15 @@ class _HomeState extends State<Home> {
                 children: [
                   MainText(text: "Hello, $name!"),
 
-                  FutureBuilder<List<MoodEntry>?>(
-                    future: fetchHistory(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Text('No mood entries found.');
-                      } else {
-                        return Column(
-                          children: snapshot.data!
-                              .map((entry) => Text('${entry.entryId} - ${entry.moodId} - ${entry.notes} - ${entry.timestamp}'))
-                              .toList(),
-                        );
-                      }
-                    },
-                  ),
-
                   SizedBox(height: 24),
 
                   // Day selector
+                  DayTimeline(
+                    selectedDayIndex: _selectedDayIndex,
+                    onDaySelected: (index) {
+                      setState(() => _selectedDayIndex = index);
+                    },
+                  ),
                 ],
               ),
             ),

@@ -14,10 +14,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       name: AppRoutes.start,
-      builder: (context, state) => BlocProvider(
-                create: (context) => MoodEntryCubit(),
-                child: const Start(),
-              )
+      builder: (context, state) => const Start(),
     ),
 
     // Home and other content pages under a separate root
