@@ -39,7 +39,9 @@ Future<List<MoodEntry>?> fetchHistory() async {
   final db = await getDatabase();
   late List<MoodEntry> history = [];
 
-  final entries = await db.rawQuery("SELECT * FROM mood_entries");
+  final entries = await db.rawQuery(
+    "SELECT * FROM mood_entries ORDER BY datetime(timestamp) DESC",
+  );
 
   for (final {
         'entry_id': entryId as int,
