@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:umore_mood_tracker/features/mood_history/cubit/mood_history_cubit.dart';
+import 'package:umore_mood_tracker/shared/database/database_helper.dart';
 
 class MoodHistoryView extends StatelessWidget {
   const MoodHistoryView({super.key});
@@ -9,6 +10,7 @@ class MoodHistoryView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MoodHistoryCubit, MoodHistoryState>(
       builder: (context, state) {
+        final cubit = context.read<MoodHistoryCubit>();
         final historyList = state.historyList;
 
         // return a list that gets all information from the mood history list, using getMoodType to get the mood type and convertTimestamp to get the date and time
@@ -48,6 +50,18 @@ class MoodHistoryView extends StatelessWidget {
                               Text(
                                 "Date: ${historyList[index].timestamp}",
                                 style: TextStyle(fontSize: 18),
+                              ),
+
+                              // delete button
+                              const SizedBox(height: 16),
+
+                              ElevatedButton(
+                                onPressed: () {
+                                  // delete the mood entry from the history list
+                                  cubit.deleteEntry(historyList[index].entryId);
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Delete"),
                               ),
                             ],
                           ),

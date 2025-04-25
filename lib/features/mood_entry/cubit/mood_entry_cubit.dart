@@ -44,7 +44,7 @@ class MoodEntryCubit extends Cubit<MoodEntryState> {
     final String timestamp = DateTime.now().toString();
 
     // inserts to db table
-    await insertEntry(
+    await insert(
       MoodEntry(
         entryId: null,
         moodId: moodId,
