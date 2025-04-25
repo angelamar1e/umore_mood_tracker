@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:umore_mood_tracker/features/home/views/home.dart';
+import 'package:umore_mood_tracker/features/home/views/home_view.dart';
 import 'package:umore_mood_tracker/features/mood_entry/cubit/mood_entry_cubit.dart';
 import 'package:umore_mood_tracker/features/mood_entry/views/mood_entry_view.dart';
 import 'package:umore_mood_tracker/features/mood_history/views/mood_history_view.dart';

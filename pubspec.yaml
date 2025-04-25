@@ -28,3 +28,4 @@ flutter:
     - lib/shared/assets/images/happy_face.png
     - lib/shared/assets/images/neutral_face.png
     - lib/shared/assets/images/sad_face.png
+    - lib/shared/assets/images/fire.png
