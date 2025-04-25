@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:umore_mood_tracker/features/mood_history/cubit/mood_history_cubit.dart';
+import 'package:umore_mood_tracker/shared/constants/mood_types.dart';
 
 class MoodHistoryView extends StatelessWidget {
   const MoodHistoryView({super.key});
@@ -31,13 +32,14 @@ class MoodHistoryView extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Image.asset(
-                                historyList[index].image,
+                                moodTypes[historyList[index].moodId].image,
                                 width: 50,
                                 height: 50,
                               ),
                               const SizedBox(height: 16),
                               Text(
-                                historyList[index].description,
+                                moodTypes[historyList[index].moodId]
+                                    .description,
                                 style: TextStyle(fontSize: 18),
                               ),
                               const SizedBox(height: 8),
@@ -57,7 +59,9 @@ class MoodHistoryView extends StatelessWidget {
                               ElevatedButton(
                                 onPressed: () {
                                   // delete the mood entry from the history list
-                                  cubit.deleteEntry(historyList[index].entryId);
+                                  cubit.deleteEntry(
+                                    historyList[index].entryId!,
+                                  );
                                   Navigator.pop(context);
                                 },
                                 child: const Text("Delete"),
@@ -88,7 +92,7 @@ class MoodHistoryView extends StatelessWidget {
                           ),
                           // get image of current mood entry
                           Image.asset(
-                            historyList[index].image,
+                            moodTypes[historyList[index].moodId].image,
                             width: 50,
                             height: 50,
                           ),
@@ -96,7 +100,7 @@ class MoodHistoryView extends StatelessWidget {
 
                           // get desc of current mood entry
                           Text(
-                            historyList[index].description,
+                            moodTypes[historyList[index].moodId].description,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

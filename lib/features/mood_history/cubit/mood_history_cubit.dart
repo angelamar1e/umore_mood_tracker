@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:umore_mood_tracker/features/mood_entry/models/mood.dart';
-import 'package:umore_mood_tracker/features/mood_history/models/full_entry.dart';
+import 'package:umore_mood_tracker/features/mood_entry/models/mood_entry.dart';
 import 'package:umore_mood_tracker/shared/constants/mood_types.dart';
 import 'package:umore_mood_tracker/shared/database/database_helper.dart';
 
@@ -15,32 +15,23 @@ class MoodHistoryCubit extends Cubit<MoodHistoryState> {
   // fetch history list from db, convert to mood history list which has image and desc and emit the state
   void fetchHistoryList() async {
     final historyList = await fetchHistory() ?? [];
-    late final List<MoodHistoryEntry> fullHistoryList = List.empty(
-      growable: true,
-    );
 
     // get mood info from moodId and convert timestamp to proper date and time format
     for (int i = 0; i < historyList.length; i++) {
       final moodId = historyList[i].moodId;
       final timestamp = historyList[i].timestamp;
-      final image = getMoodType(moodId).image;
-      final description = getMoodType(moodId).description;
       final notes = historyList[i].notes;
       final formattedDate = convertTimestamp(timestamp);
 
-      fullHistoryList.add(
-        MoodHistoryEntry(
-          entryId: historyList[i].entryId!,
-          moodId: moodId,
-          timestamp: formattedDate,
-          image: image,
-          description: description,
-          notes: notes,
-        ),
+      historyList[i] = MoodEntry(
+        entryId: historyList[i].entryId,
+        moodId: moodId,
+        notes: notes,
+        timestamp: formattedDate,
       );
     }
 
-    emit(state.copyWith(historyList: fullHistoryList));
+    emit(state.copyWith(historyList: historyList));
   }
 
   void deleteEntry(int entryId) async {
