@@ -1,15 +1,18 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:umore_mood_tracker/features/mood_stats/models/pie_section_data.dart';
 import 'package:umore_mood_tracker/shared/theme/app_colors.dart';
 
 class PieChartSample3 extends StatefulWidget {
-  const PieChartSample3({super.key});
+  final List<PieSectionData> sectionsData;
+
+  const PieChartSample3({super.key, required this.sectionsData});
 
   @override
   State<StatefulWidget> createState() => PieChartSample3State();
 }
 
-class PieChartSample3State extends State {
+class PieChartSample3State extends State<PieChartSample3> {
   int touchedIndex = 0;
 
   @override
@@ -36,7 +39,7 @@ class PieChartSample3State extends State {
             ),
             borderData: FlBorderData(show: false),
             sectionsSpace: 0,
-            centerSpaceRadius: 0,
+            centerSpaceRadius: 0, // Adjusted from 0 to 40 for better rendering
             sections: showingSections(),
           ),
         ),
@@ -45,93 +48,34 @@ class PieChartSample3State extends State {
   }
 
   List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
-      final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 20.0 : 16.0;
-      final radius = isTouched ? 110.0 : 100.0;
-      final widgetSize = isTouched ? 55.0 : 40.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+    final totalValue = widget.sectionsData.fold<double>(
+      0,
+      (sum, section) => sum + section.value,
+    );
 
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: AppColors.contentColorBlue,
-            value: 40,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-              shadows: shadows,
-            ),
-            badgeWidget: _Badge(
-              'assets/icons/ophthalmology-svgrepo-com.svg',
-              size: widgetSize,
-              borderColor: AppColors.contentColorBlack,
-            ),
-            badgePositionPercentageOffset: .98,
-          );
-        case 1:
-          return PieChartSectionData(
-            color: AppColors.contentColorYellow,
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-              shadows: shadows,
-            ),
-            badgeWidget: _Badge(
-              'assets/icons/librarian-svgrepo-com.svg',
-              size: widgetSize,
-              borderColor: AppColors.contentColorBlack,
-            ),
-            badgePositionPercentageOffset: .98,
-          );
-        case 2:
-          return PieChartSectionData(
-            color: AppColors.contentColorPurple,
-            value: 16,
-            title: '16%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-              shadows: shadows,
-            ),
-            badgeWidget: _Badge(
-              'assets/icons/fitness-svgrepo-com.svg',
-              size: widgetSize,
-              borderColor: AppColors.contentColorBlack,
-            ),
-            badgePositionPercentageOffset: .98,
-          );
-        case 3:
-          return PieChartSectionData(
-            color: AppColors.contentColorGreen,
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-              shadows: shadows,
-            ),
-            badgeWidget: _Badge(
-              'assets/icons/worker-svgrepo-com.svg',
-              size: widgetSize,
-              borderColor: AppColors.contentColorBlack,
-            ),
-            badgePositionPercentageOffset: .98,
-          );
-        default:
-          throw Exception('Oh no');
-      }
+    return List.generate(widget.sectionsData.length, (i) {
+      final isTouched = i == touchedIndex;
+      final section = widget.sectionsData[i];
+      final normalizedValue = (section.value / totalValue) * 100;
+
+      return PieChartSectionData(
+        color: section.color,
+        value: normalizedValue, // Normalized value to ensure total is 100
+        title: '${normalizedValue.toStringAsFixed(1)}%', // Display percentage
+        badgeWidget: _Badge(
+          section.image,
+          size: isTouched ? 55.0 : 40.0,
+          borderColor: AppColors.contentColorBlue,
+        ),
+        radius: isTouched ? 110.0 : 100.0,
+        titleStyle: TextStyle(
+          fontSize: isTouched ? 20.0 : 16.0,
+          fontWeight: FontWeight.bold,
+          color: const Color(0xffffffff),
+          shadows: const [Shadow(color: Colors.black, blurRadius: 2)],
+        ),
+        badgePositionPercentageOffset: .98,
+      );
     });
   }
 }
@@ -160,8 +104,8 @@ class _Badge extends StatelessWidget {
           ),
         ],
       ),
-      padding: EdgeInsets.all(size * .15),
-      child: Center(child: Image.asset(image)),
+      padding: EdgeInsets.all(size * .2),
+      child: Center(child: Image.asset(image, height: 50, width: 50)),
     );
   }
 }
