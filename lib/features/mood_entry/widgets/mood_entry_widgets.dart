@@ -77,44 +77,46 @@ class JournalEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<MoodEntryCubit>(); // Access the MoodEntryCubit
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset(
-          moodTypes[selectedIndex].image,
-          width: 100,
-          height: 100,
-        ), // Display selected mood image
-        Text(
-          moodTypes[selectedIndex]
-              .description, // Display selected mood description
-          style: TextStyle(color: Colors.white, fontSize: 18),
-        ),
-        SizedBox(height: 24),
-        Expanded(
-          child: TextField(
-            controller: cubit.notesController, // Controller for journal text
-            maxLines: null,
-            expands: true,
-            textAlignVertical: TextAlignVertical.top,
-            decoration: InputDecoration(
-              hintText: 'What made you feel this way?',
-              hintStyle: TextStyle(color: Colors.grey[800]),
-              fillColor: Colors.white.withAlpha((0.2 * 255).toInt()),
-              filled: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(32),
-                borderSide: BorderSide.none,
-              ),
-              contentPadding: EdgeInsets.all(16),
-            ),
-            style: TextStyle(color: Colors.black),
-            keyboardType: TextInputType.multiline,
-            onChanged:
-                (text) => cubit.addNotes(text), // Update journal text in cubit
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            moodTypes[selectedIndex].image,
+            width: 100,
+            height: 100,
+          ), // Display selected mood image
+          Text(
+            moodTypes[selectedIndex]
+                .description, // Display selected mood description
+            style: TextStyle(color: Colors.white, fontSize: 18),
           ),
-        ),
-      ],
+          SizedBox(height: 24),
+          Expanded(
+            child: TextField(
+              controller: cubit.notesController, // Controller for journal text
+              maxLines: null,
+              expands: true,
+              textAlignVertical: TextAlignVertical.top,
+              decoration: InputDecoration(
+                hintText: 'What made you feel this way?',
+                hintStyle: TextStyle(color: Colors.grey[800]),
+                fillColor: Colors.white.withAlpha((0.2 * 255).toInt()),
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(32),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: EdgeInsets.all(16),
+              ),
+              style: TextStyle(color: Colors.black),
+              keyboardType: TextInputType.multiline,
+              onChanged:
+                  (text) => cubit.addNotes(text), // Update journal text in cubit
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

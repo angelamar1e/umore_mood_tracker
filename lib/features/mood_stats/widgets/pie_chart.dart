@@ -65,7 +65,7 @@ class PieChartSample3State extends State<PieChartSample3> {
         badgeWidget: _Badge(
           section.image,
           size: isTouched ? 55.0 : 40.0,
-          borderColor: AppColors.contentColorBlue,
+          borderColor: AppColors.mainColor,
         ),
         radius: isTouched ? 110.0 : 100.0,
         titleStyle: TextStyle(

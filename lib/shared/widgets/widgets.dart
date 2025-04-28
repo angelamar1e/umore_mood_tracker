@@ -1,56 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:umore_mood_tracker/shared/widgets/main_layout.dart';
 
 class SuccessScreen extends StatelessWidget {
   const SuccessScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF87CEEB), Color(0xFF4169E1)],
-          ),
-        ),
-        child: SafeArea(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.check, // Use check instead of check_circle
-                      color: Colors.white,
-                      size: 80,
-                    ),
-                  ),
+    return MainLayout(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                color: Colors.green,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.check, // Use check instead of check_circle
+                  color: Colors.white,
+                  size: 80,
                 ),
-                SizedBox(height: 32),
-                Text(
-                  'Mood Entry Saved!',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Returning to home...',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-              ],
+              ),
             ),
-          ),
+            SizedBox(height: 32),
+            Text(
+              'Mood Entry Saved!',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text('Returning to home...', style: TextStyle(fontSize: 16)),
+          ],
         ),
       ),
     );
@@ -75,6 +58,7 @@ class CustomBottomNavBar extends StatelessWidget {
       padding: EdgeInsets.zero,
       notchMargin: 8,
       shape: CircularNotchedRectangle(),
+      elevation: 8.0,
       child: Row(
         children: [
           Expanded(
@@ -188,9 +172,9 @@ class CustomElevatedButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
           foregroundColor: foregroundColor,
-          padding: padding ?? EdgeInsets.symmetric(vertical: 8),
+          padding: padding ?? EdgeInsets.symmetric(vertical: 12),
         ),
-        child: Text(text, style: textStyle),
+        child: Text(text, style: textStyle ?? TextStyle(fontSize: 16)),
       ),
     );
   }
@@ -225,11 +209,11 @@ class CustomOutlinedButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: 8),
+          padding: padding ?? EdgeInsets.symmetric(vertical: 12),
           side: BorderSide(width: 1, color: borderColor),
           foregroundColor: foregroundColor,
         ),
-        child: Text(text, style: textStyle),
+        child: Text(text, style: textStyle ?? TextStyle(fontSize: 16)),
       ),
     );
   }
@@ -238,15 +222,21 @@ class CustomOutlinedButton extends StatelessWidget {
 // Widget to display main text with bold styling
 class MainText extends StatelessWidget {
   final String text;
+  final TextStyle? textStyle;
   final Color color;
 
-  const MainText({super.key, required this.text, required this.color});
+  const MainText({
+    super.key,
+    required this.text,
+    this.textStyle,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: color),
+      style: textStyle ?? TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: color),
     );
   }
 }
@@ -254,15 +244,21 @@ class MainText extends StatelessWidget {
 // Widget to display subtext with smaller font size
 class SubText extends StatelessWidget {
   final String text;
+  final TextStyle? textStyle;
   final Color color; // Text to display
 
-  const SubText({super.key, required this.text, required this.color});
+  const SubText({
+    super.key,
+    required this.text,
+    this.textStyle,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(
+      style: textStyle ?? TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.normal,
         color: color,
