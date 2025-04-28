@@ -69,7 +69,7 @@ Future<Map<int, int>> countByMood() async {
   late Map<int, int> moodEntriesCount = {};
 
   final entries = await db.rawQuery(
-    "SELECT mood_id, COUNT() as count FROM mood_entries GROUP BY mood_id",
+    "SELECT mood_id, COUNT() as count FROM mood_entries GROUP BY mood_id ORDER BY count DESC",
   );
 
   for (final {'mood_id': moodId as int, 'count': count as int} in entries) {
