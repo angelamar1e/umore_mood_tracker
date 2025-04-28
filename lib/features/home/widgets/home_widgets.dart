@@ -42,6 +42,7 @@ class DayTimeline extends StatelessWidget {
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       days[index]['name']!,
@@ -50,11 +51,12 @@ class DayTimeline extends StatelessWidget {
                             selectedDayIndex == index
                                 ? Colors.white
                                 : Colors.grey,
-                        fontSize: 14,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
+                      textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 6),
+                    const SizedBox(height: 6),
                     Text(
                       days[index]['number']!,
                       style: TextStyle(
@@ -62,14 +64,15 @@ class DayTimeline extends StatelessWidget {
                             selectedDayIndex == index
                                 ? Colors.white
                                 : Colors.black,
-                        fontSize: 18,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 6),
+              const SizedBox(height: 6),
               if (hasData) Image.asset('lib/shared/assets/images/fire.png', height: 32),
             ],
           );

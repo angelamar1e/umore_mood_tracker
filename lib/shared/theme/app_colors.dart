@@ -23,3 +23,11 @@ class AppColors {
   static const Color contentColorRed = Color(0xFFE80054);
   static const Color contentColorCyan = Color(0xFF50E4FF);
 }
+
+BoxDecoration gradientBackground() => BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [Color(0xFF87CEEB), Color(0xFF4169E1)],
+    ),
+  );

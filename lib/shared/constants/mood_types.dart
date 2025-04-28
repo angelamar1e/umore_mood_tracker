@@ -6,8 +6,8 @@ final List<Mood> moodTypes = [
     description: "I can't take this!",
   ),
   Mood(
-    image: 'lib/shared/assets/images/angry_face.png',
-    description: "I'm frustrated",
+    image: 'lib/shared/assets/images/smiling_face.png',
+    description: "I'm fine",
   ),
   Mood(
     image: 'lib/shared/assets/images/sad_face.png',

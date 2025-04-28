@@ -4,5 +4,5 @@ class AppRoutes {
   static const String moodEntry = 'mood-entry';
   static const String moodHistory = 'mood-history';
   static const String moodStats = 'mood-stats';
-  static const String settings = 'settings';
+  static const String profile = 'profile';
 }

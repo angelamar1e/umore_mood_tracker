@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:umore_mood_tracker/shared/routes/app_routes.dart';
+import 'package:umore_mood_tracker/shared/theme/app_colors.dart';
 import 'package:umore_mood_tracker/shared/widgets/widgets.dart';
 
 class Start extends StatefulWidget {
@@ -19,7 +21,7 @@ class _StartState extends State<Start> {
     'lib/shared/assets/images/happy_face.png',
     'lib/shared/assets/images/sad_face.png',
     'lib/shared/assets/images/neutral_face.png',
-    'lib/shared/assets/images/angry_face.png',
+    'lib/shared/assets/images/smiling_face.png',
     'lib/shared/assets/images/crying_face.png',
   ];
 
@@ -45,13 +47,7 @@ class _StartState extends State<Start> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF87CEEB), Color(0xFF4169E1)],
-          ),
-        ),
+        decoration: gradientBackground(),
         child: SafeArea(
           child: Column(
             mainAxisAlignment:
@@ -64,16 +60,15 @@ class _StartState extends State<Start> {
               SizedBox(height: 64),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 48),
-                child: CustomButton(
+                child: CustomElevatedButton(
                   text: 'Get Started',
-                  route: AppRoutes.home,
+                  onPressed: () => context.goNamed(AppRoutes.home),
                   textStyle: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                   backgroundColor: Colors.white,
                   foregroundColor: Color(0xFF4169E1),
-                  padding: EdgeInsets.symmetric(vertical: 14),
                 ), // Display the "Get Started" button
               ),
             ],

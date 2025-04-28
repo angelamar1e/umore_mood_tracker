@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:umore_mood_tracker/features/mood_history/cubit/mood_history_cubit.dart';
+
 import 'package:umore_mood_tracker/shared/constants/mood_types.dart';
+import 'package:umore_mood_tracker/shared/theme/app_colors.dart';
+import 'package:umore_mood_tracker/shared/widgets/main_layout.dart';
+import 'package:umore_mood_tracker/shared/widgets/widgets.dart';
 
 class MoodHistoryView extends StatelessWidget {
   const MoodHistoryView({super.key});
@@ -15,101 +19,182 @@ class MoodHistoryView extends StatelessWidget {
 
         // return a list that gets all information from the mood history list, using getMoodType to get the mood type and convertTimestamp to get the date and time
 
-        return Scaffold(
-          body: Container(
-            child: Column(
-              children: List.generate(
-                historyList.length,
-                (index) => GestureDetector(
-                  onTap: () {
-                    // open a dialog that displays the full mood entry details, positioned at the bottom of the screen
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return Container(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                moodTypes[historyList[index].moodId].image,
-                                width: 50,
-                                height: 50,
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                moodTypes[historyList[index].moodId]
-                                    .description,
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                "Notes: ${historyList[index].notes}",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                "Date: ${historyList[index].timestamp}",
-                                style: TextStyle(fontSize: 18),
-                              ),
-
-                              // delete button
-                              const SizedBox(height: 16),
-
-                              ElevatedButton(
-                                onPressed: () {
-                                  // delete the mood entry from the history list
-                                  cubit.deleteEntry(
-                                    historyList[index].entryId!,
-                                  );
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Delete"),
-                              ),
-                            ],
+        return MainLayout(
+          currentIndex: 2,
+          child: Container(
+            decoration: gradientBackground(),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ListView.builder(
+                  itemCount: historyList.length,
+                  itemBuilder:
+                      (context, index) => GestureDetector(
+                        onTap: () {
+                          // Show a dialog in the center of the screen with mood entry details
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Container(
+                                  width:
+                                      320, // Fixed width for square appearance
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Row with image and mood description + timestamp
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // Mood image
+                                          Image.asset(
+                                            moodTypes[historyList[index].moodId]
+                                                .image,
+                                            width: 50,
+                                            height: 50,
+                                          ),
+                                          const SizedBox(width: 16),
+                                          // Column with mood description and timestamp
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                // Mood description
+                                                Text(
+                                                  moodTypes[historyList[index]
+                                                          .moodId]
+                                                      .description,
+                                                  style: const TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 4),
+                                                // Timestamp
+                                                Text(
+                                                  historyList[index].timestamp,
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 12),
+                                      // Notes with ellipsis when too long
+                                      Text(
+                                        historyList[index].notes.isEmpty
+                                            ? "No notes"
+                                            : historyList[index].notes,
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
+                                      const SizedBox(height: 16),
+                                      // Delete button - align to the right
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: CustomElevatedButton(
+                                          onPressed: () {
+                                            // delete the mood entry from the history list
+                                            cubit.deleteEntry(
+                                              historyList[index].entryId!,
+                                            );
+                                            Navigator.pop(context);
+                                          },
+                                          backgroundColor: Colors.red,
+                                          textStyle: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.white,
+                                          ),
+                                          text: 'Delete',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Card(
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 16,
                           ),
-                        );
-                      },
-                    );
-                  },
-                  child: Card(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 8,
-                      horizontal: 16,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // get date of current mood entry
-                          Text(
-                            historyList[index].timestamp,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey,
+                          child: Container(
+                            height: 120, // Fixed height for all cards
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Row with image and mood description + timestamp
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Mood image
+                                    Image.asset(
+                                      moodTypes[historyList[index].moodId]
+                                          .image,
+                                      width: 50,
+                                      height: 50,
+                                    ),
+                                    const SizedBox(width: 16),
+                                    // Column with mood description and timestamp
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // Mood description
+                                          Text(
+                                            moodTypes[historyList[index].moodId]
+                                                .description,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          // Timestamp
+                                          Text(
+                                            historyList[index].timestamp,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                                // Notes with ellipsis when too long
+                                Expanded(
+                                  child: Text(
+                                    historyList[index].notes.isEmpty
+                                        ? "No notes"
+                                        : historyList[index].notes,
+                                    style: const TextStyle(fontSize: 16),
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          // get image of current mood entry
-                          Image.asset(
-                            moodTypes[historyList[index].moodId].image,
-                            width: 50,
-                            height: 50,
-                          ),
-                          const SizedBox(height: 8),
-
-                          // get desc of current mood entry
-                          Text(
-                            moodTypes[historyList[index].moodId].description,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
                 ),
               ),
             ),

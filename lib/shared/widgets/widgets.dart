@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:umore_mood_tracker/features/mood_entry/cubit/mood_entry_cubit.dart';
 
 class SuccessScreen extends StatelessWidget {
   const SuccessScreen({super.key});
@@ -42,13 +40,13 @@ class SuccessScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 8),
                 Text(
                   'Returning to home...',
-                  style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ],
             ),
@@ -96,7 +94,7 @@ class CustomBottomNavBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildNavBarItem(2, Icons.history, "History"),
-                _buildNavBarItem(3, Icons.settings, "Settings"),
+                _buildNavBarItem(3, Icons.person, "Profile"),
               ],
             ),
           ),
@@ -161,13 +159,12 @@ class ProgressDotIndicator extends StatelessWidget {
 }
 
 // Button to navigate to the home screen
-class CustomButton extends StatelessWidget {
-  const CustomButton({
+class CustomElevatedButton extends StatelessWidget {
+  const CustomElevatedButton({
     this.context,
-    this.cubit,
+    this.onPressed,
     required this.text,
-    required this.route,
-    required this.textStyle,
+    this.textStyle,
     this.backgroundColor,
     this.foregroundColor,
     this.padding,
@@ -175,10 +172,9 @@ class CustomButton extends StatelessWidget {
   });
 
   final BuildContext? context;
-  final MoodEntryCubit? cubit;
+  final VoidCallback? onPressed;
   final String text;
-  final String route;
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
   final Color? backgroundColor;
   final Color? foregroundColor;
   final EdgeInsets? padding;
@@ -188,13 +184,11 @@ class CustomButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
-          context.goNamed(route); // Navigate to mood entry screen
-        },
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
           foregroundColor: foregroundColor,
-          padding: padding,
+          padding: padding ?? EdgeInsets.symmetric(vertical: 8),
         ),
         child: Text(text, style: textStyle),
       ),
@@ -202,81 +196,40 @@ class CustomButton extends StatelessWidget {
   }
 }
 
-// Button to proceed to the next step in mood entry
-class NextButton extends StatelessWidget {
-  const NextButton({super.key, required this.cubit});
+class CustomOutlinedButton extends StatelessWidget {
+  const CustomOutlinedButton({
+    this.context,
+    this.onPressed,
+    required this.text,
+    required this.icon,
+    this.textStyle,
+    required this.borderColor,
+    this.foregroundColor,
+    this.padding,
+    super.key,
+  });
 
-  final MoodEntryCubit cubit;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          cubit
-              .startNoteEntry(); // Complete mood selection step, and start note entry
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          padding: EdgeInsets.symmetric(vertical: 14),
-        ),
-        child: Text(
-          'Next',
-          style: TextStyle(fontSize: 18, color: Color(0xFF4169E1)),
-        ),
-      ),
-    );
-  }
-}
-
-// Button to return to the previous step in mood entry
-class ReturnButton extends StatelessWidget {
-  const ReturnButton({super.key, required this.cubit});
-
-  final MoodEntryCubit cubit;
+  final BuildContext? context;
+  final VoidCallback? onPressed;
+  final String text;
+  final Icon icon;
+  final TextStyle? textStyle;
+  final Color borderColor;
+  final Color? foregroundColor;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: OutlinedButton.icon(
-        onPressed:
-            () => cubit.startMoodSelection(), // Navigate back to mood selection
-        icon: Icon(Icons.arrow_back_ios_new, size: 18),
+      child: OutlinedButton(
+        onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: 14),
-          side: BorderSide(width: 1, color: Colors.white),
-          foregroundColor: Colors.white,
+          padding: EdgeInsets.symmetric(vertical: 8),
+          side: BorderSide(width: 1, color: borderColor),
+          foregroundColor: foregroundColor,
         ),
-        label: Text('Back', style: TextStyle(fontSize: 18)),
-      ),
-    );
-  }
-}
-
-// Button to finish mood entry and save the data
-class FinishButton extends StatelessWidget {
-  const FinishButton({super.key, required this.cubit});
-
-  final MoodEntryCubit cubit;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          cubit.completeMoodEntry(); // Save mood entry data
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          padding: EdgeInsets.symmetric(vertical: 14),
-        ),
-        child: Text(
-          'Finish',
-          style: TextStyle(fontSize: 18, color: Color(0xFF4169E1)),
-        ),
+        child: Text(text, style: textStyle),
       ),
     );
   }
@@ -285,30 +238,35 @@ class FinishButton extends StatelessWidget {
 // Widget to display main text with bold styling
 class MainText extends StatelessWidget {
   final String text;
+  final Color color;
 
-  const MainText({super.key, required this.text});
+  const MainText({super.key, required this.text, required this.color});
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(
-        fontSize: 26,
-        fontWeight: FontWeight.bold,
-        color: Colors.black,
-      ),
+      style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: color),
     );
   }
 }
 
 // Widget to display subtext with smaller font size
 class SubText extends StatelessWidget {
-  final String text; // Text to display
+  final String text;
+  final Color color; // Text to display
 
-  const SubText({super.key, required this.text});
+  const SubText({super.key, required this.text, required this.color});
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: TextStyle(fontSize: 14, color: Colors.grey[800]));
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.normal,
+        color: color,
+      ),
+    );
   }
 }

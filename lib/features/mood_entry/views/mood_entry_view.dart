@@ -43,6 +43,7 @@ class MoodEntryView extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     ProgressDotIndicator(isFirstStep: isFirstStep),
                     SizedBox(height: 16),
@@ -51,6 +52,7 @@ class MoodEntryView extends StatelessWidget {
                           isFirstStep
                               ? 'How are you feeling today?'
                               : 'Tell us more about your mood',
+                      color: Colors.white,
                     ),
                     SizedBox(height: 6),
                     SubText(
@@ -58,6 +60,7 @@ class MoodEntryView extends StatelessWidget {
                           isFirstStep
                               ? 'Select an emoji that best describes your mood'
                               : 'Write your thoughts about how you\'re feeling',
+                      color: Colors.white60,
                     ),
                     const SizedBox(height: 16),
                     Expanded(
@@ -74,13 +77,36 @@ class MoodEntryView extends StatelessWidget {
                     ),
                     SizedBox(height: 16),
                     if (isFirstStep && selectedIndex != -1)
-                      NextButton(cubit: cubit)
+                      CustomElevatedButton(
+                        onPressed: () => cubit.startNoteEntry(),
+                        text: 'Next',
+                        backgroundColor: Colors.white,
+                        textStyle: TextStyle(
+                          fontSize: 18,
+                          color: Color(0xFF4169E1),
+                        ),
+                      )
                     else if (!isFirstStep)
                       Column(
                         children: [
-                          ReturnButton(cubit: cubit),
+                          CustomOutlinedButton(
+                            onPressed: () => cubit.startMoodSelection(),
+                            text: 'Back',
+                            icon: Icon(Icons.arrow_back_ios_new, size: 18),
+                            borderColor: Colors.white,
+                            foregroundColor: Colors.white,
+                            textStyle: TextStyle(fontSize: 18),
+                          ),
                           const SizedBox(height: 8),
-                          FinishButton(cubit: cubit),
+                          CustomElevatedButton(
+                            onPressed: () => cubit.completeMoodEntry(),
+                            text: 'Finish',
+                            backgroundColor: Colors.white,
+                            textStyle: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xFF4169E1),
+                            ),
+                          ),
                         ],
                       ),
                   ],

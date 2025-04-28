@@ -54,7 +54,7 @@ class MoodSelection extends StatelessWidget {
                   Text(
                     moodTypes[selectedIndex]
                         .description, // Display mood description
-                    style: TextStyle(fontSize: 18, color: Colors.black),
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -88,7 +88,7 @@ class JournalEntry extends StatelessWidget {
         Text(
           moodTypes[selectedIndex]
               .description, // Display selected mood description
-          style: TextStyle(color: Colors.black, fontSize: 18),
+          style: TextStyle(color: Colors.white, fontSize: 18),
         ),
         SizedBox(height: 24),
         Expanded(
