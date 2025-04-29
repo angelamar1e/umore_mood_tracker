@@ -17,48 +17,50 @@ class MoodStatsView extends StatelessWidget {
 
         return MainLayout(
           currentIndex: 1,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const MainText(
-                text: 'Your Mood Statistics',
-                textAlign: TextAlign.start,
-              ),
-              pieChartData.isEmpty
-                  ? const Center(
-                    child: MainText(
-                      text:
-                          'No mood data available yet.\nAdd some entries to see statistics!',
-                      textAlign: TextAlign.center,
-                      fontSize: 18,
-                      color: Colors.grey,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const MainText(
+                  text: 'Your Mood Statistics',
+                  textAlign: TextAlign.start,
+                ),
+                pieChartData.isEmpty
+                    ? const Center(
+                      child: MainText(
+                        text:
+                            'No mood data available yet.\nAdd some entries to see statistics!',
+                        textAlign: TextAlign.center,
+                        fontSize: 18,
+                        color: Colors.grey,
+                      ),
+                    )
+                    : SizedBox(
+                      child: PieChartSample3(sectionsData: pieChartData),
                     ),
-                  )
-                  : SizedBox(
-                    child: PieChartSample3(sectionsData: pieChartData),
-                  ),
-              // Display average mood type and score
-              Row(
-                children: [
-                  if (state.averageMoodType != null) ...[
-                    StatsCard(
-                      cardTitle: 'Average Mood Score',
-                      imageState: state.averageMoodType!.image,
-                      textState:
-                          '${state.averageMoodScore?.toStringAsFixed(2)}',
-                    ),
+                // Display average mood type and score
+                Row(
+                  children: [
+                    if (state.averageMoodType != null) ...[
+                      StatsCard(
+                        cardTitle: 'Average Mood Score',
+                        imageState: state.averageMoodType!.image,
+                        textState:
+                            '${state.averageMoodScore?.toStringAsFixed(2)}',
+                      ),
+                    ],
+                    const SizedBox(width: 20),
+                    if (state.mostFrequent != null) ...[
+                      StatsCard(
+                        cardTitle: 'Most Frequent Mood',
+                        imageState: state.mostFrequent!.image,
+                        textState: '${state.mostFrequent?.description}',
+                      ),
+                    ],
                   ],
-                  const SizedBox(width: 20),
-                  if (state.mostFrequent != null) ...[
-                    StatsCard(
-                      cardTitle: 'Most Frequent Mood',
-                      imageState: state.mostFrequent!.image,
-                      textState: '${state.mostFrequent?.description}',
-                    ),
-                  ],
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         );
       },
