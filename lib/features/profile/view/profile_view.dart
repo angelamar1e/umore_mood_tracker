@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:umore_mood_tracker/shared/theme/app_colors.dart';
 import 'package:umore_mood_tracker/shared/widgets/main_layout.dart';
+import 'package:umore_mood_tracker/shared/widgets/widgets.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -9,7 +9,13 @@ class ProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MainLayout(
       currentIndex: 3,
-      child: Container(decoration: gradientBackground()),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const MainText(text: 'Profile', textAlign: TextAlign.start),
+          const SizedBox(height: 20),
+        ],
+      ),
     );
   }
 }

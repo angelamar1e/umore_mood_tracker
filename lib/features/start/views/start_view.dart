@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:umore_mood_tracker/features/start/widgets/start_widgets.dart';
 import 'package:umore_mood_tracker/shared/routes/app_routes.dart';
 import 'package:umore_mood_tracker/shared/widgets/main_layout.dart';
 import 'package:umore_mood_tracker/shared/widgets/widgets.dart';
@@ -13,8 +14,8 @@ class Start extends StatefulWidget {
 }
 
 class _StartState extends State<Start> {
-  int _currentImageIndex = 0; // Tracks the current index of the mood image
-  late Timer _timer; // Timer to periodically update the image index
+  int _currentImageIndex = 0;
+  late Timer _timer;
 
   // List of mood image paths
   final List<String> _moodImages = [
@@ -28,7 +29,6 @@ class _StartState extends State<Start> {
   @override
   void initState() {
     super.initState();
-    // Initialize the timer to update the image index every 500ms
     _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
       setState(() {
         _currentImageIndex = (_currentImageIndex + 1) % _moodImages.length;
@@ -38,7 +38,6 @@ class _StartState extends State<Start> {
 
   @override
   void dispose() {
-    // Cancel the timer when the widget is disposed
     _timer.cancel();
     super.dispose();
   }
@@ -49,14 +48,27 @@ class _StartState extends State<Start> {
       showFab: false,
       showNavBar: false,
       child: Column(
-        mainAxisAlignment:
-            MainAxisAlignment.center, // Center content vertically
-        crossAxisAlignment:
-            CrossAxisAlignment.stretch, // Stretch content horizontally
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          emojiImages(), // Display the mood image
-          Column(children: [titleText(), subtitleText()]),
-          SizedBox(height: 64),
+          EmojiImages(
+            moodImages: _moodImages,
+            currentImageIndex: _currentImageIndex,
+          ),
+          Column(
+            children: [
+              const MainText(
+                text: 'UMORE',
+                fontSize: 48,
+              ),
+              const SubText(
+                text: 'Track yourself more',
+                fontSize: 18,
+                fontStyle: FontStyle.italic,
+              ),
+            ],
+          ),
+          const SizedBox(height: 64),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 48),
             child: CustomElevatedButton(
@@ -64,42 +76,9 @@ class _StartState extends State<Start> {
               onPressed: () => context.goNamed(AppRoutes.home),
               backgroundColor: Colors.white,
               foregroundColor: Color(0xFF4169E1),
-            ), // Display the "Get Started" button
+            ),
           ),
         ],
-      ),
-    );
-  }
-
-  // Widget to display the current mood image
-  Image emojiImages() {
-    return Image.asset(
-      _moodImages[_currentImageIndex],
-      width: 150,
-      height: 150,
-    );
-  }
-
-  // Widget to display the title text
-  Text titleText() {
-    return Text(
-      'UMORE',
-      style: TextStyle(
-        fontSize: 48,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
-      ),
-    );
-  }
-
-  // Widget to display the subtitle text
-  Text subtitleText() {
-    return Text(
-      'Track yourself more',
-      style: TextStyle(
-        fontSize: 20,
-        fontStyle: FontStyle.italic,
-        color: Colors.white,
       ),
     );
   }

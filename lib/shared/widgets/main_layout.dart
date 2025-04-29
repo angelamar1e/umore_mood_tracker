@@ -31,7 +31,10 @@ class MainLayout extends StatelessWidget {
           ),
         ),
         child: SafeArea(
-          child: Padding(padding: EdgeInsets.all(16), child: child),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Center(child: child),
+          ),
         ),
       ),
       floatingActionButton: showFab ? _buildFab(context) : null,

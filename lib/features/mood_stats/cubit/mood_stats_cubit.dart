@@ -77,7 +77,7 @@ class MoodStatsCubit extends Cubit<MoodStatsState> {
         : index == 2
         ? AppColors.contentColorYellow
         : index == 3
-        ? AppColors.contentColorGrey
+        ? AppColors.contentColorBlue
         : AppColors.contentColorGreen;
   }
 }

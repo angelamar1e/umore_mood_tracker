@@ -7,8 +7,8 @@ import 'package:umore_mood_tracker/shared/constants/mood_types.dart';
 class MoodSelection extends StatelessWidget {
   const MoodSelection(this.cubit, {super.key, required this.selectedIndex});
 
-  final MoodEntryCubit cubit; // Cubit to manage mood selection state
-  final int selectedIndex; // Index of the currently selected mood
+  final MoodEntryCubit cubit;
+  final int selectedIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -24,20 +24,14 @@ class MoodSelection extends StatelessWidget {
                   moodTypes.length,
                   (index) => GestureDetector(
                     onTap: () {
-                      cubit.selectMood(index); // Update selected mood index
+                      cubit.selectMood(index);
                     },
                     child: Opacity(
-                      opacity:
-                          selectedIndex == index
-                              ? 1.0
-                              : 0.5, // Highlight selected mood
+                      opacity: selectedIndex == index ? 1.0 : 0.5,
                       child: Transform.scale(
-                        scale:
-                            selectedIndex == index
-                                ? 1.5
-                                : 1.0, // Scale selected mood
+                        scale: selectedIndex == index ? 1.5 : 1.0,
                         child: Image.asset(
-                          moodTypes[index].image, // Display mood image
+                          moodTypes[index].image,
                           width: 100,
                           height: 100,
                         ),
@@ -52,8 +46,7 @@ class MoodSelection extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    moodTypes[selectedIndex]
-                        .description, // Display mood description
+                    moodTypes[selectedIndex].description,
                     style: TextStyle(fontSize: 18, color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
@@ -66,56 +59,58 @@ class MoodSelection extends StatelessWidget {
   }
 }
 
-// Widget for entering a journal entry related to the selected mood
 class JournalEntry extends StatelessWidget {
   const JournalEntry(this.context, {super.key, required this.selectedIndex});
 
-  final BuildContext context; // Build context for the widget
-  final int selectedIndex; // Index of the selected mood
+  final BuildContext context;
+  final int selectedIndex;
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<MoodEntryCubit>(); // Access the MoodEntryCubit
+    final cubit = context.read<MoodEntryCubit>();
 
     return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            moodTypes[selectedIndex].image,
-            width: 100,
-            height: 100,
-          ), // Display selected mood image
-          Text(
-            moodTypes[selectedIndex]
-                .description, // Display selected mood description
-            style: TextStyle(color: Colors.white, fontSize: 18),
-          ),
-          SizedBox(height: 24),
-          Expanded(
-            child: TextField(
-              controller: cubit.notesController, // Controller for journal text
-              maxLines: null,
-              expands: true,
-              textAlignVertical: TextAlignVertical.top,
-              decoration: InputDecoration(
-                hintText: 'What made you feel this way?',
-                hintStyle: TextStyle(color: Colors.grey[800]),
-                fillColor: Colors.white.withAlpha((0.2 * 255).toInt()),
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(32),
-                  borderSide: BorderSide.none,
-                ),
-                contentPadding: EdgeInsets.all(16),
-              ),
-              style: TextStyle(color: Colors.black),
-              keyboardType: TextInputType.multiline,
-              onChanged:
-                  (text) => cubit.addNotes(text), // Update journal text in cubit
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              moodTypes[selectedIndex].image,
+              width: 100,
+              height: 100,
             ),
-          ),
-        ],
+            Text(
+              moodTypes[selectedIndex].description,
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+            SizedBox(height: 24),
+            SizedBox(
+              height: 100,
+              child: TextField(
+                controller: cubit.notesController,
+                maxLines: null,
+                expands: true,
+                textAlignVertical: TextAlignVertical.top,
+                decoration: InputDecoration(
+                  hintText: 'What made you feel this way?',
+                  hintStyle: TextStyle(color: Colors.grey[800]),
+                  fillColor: Colors.white.withAlpha((0.2 * 255).toInt()),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(32),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: EdgeInsets.all(16),
+                ),
+                style: TextStyle(color: Colors.black),
+                keyboardType: TextInputType.multiline,
+                onChanged: (text) => cubit.addNotes(text),
+              ),
+            ),
+            SizedBox(height: 20), // Add bottom padding
+          ],
+        ),
       ),
     );
   }

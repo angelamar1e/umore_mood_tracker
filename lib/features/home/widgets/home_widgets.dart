@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:umore_mood_tracker/shared/widgets/widgets.dart';
 
 class DayTimeline extends StatefulWidget {
   final bool hasData;
@@ -71,23 +72,18 @@ class _DayTimelineState extends State<DayTimeline> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        days[index]['name']!,
-                        style: TextStyle(
+                      MainText(
+                        text: days[index]['name']!,
                           color: isToday ? Colors.white : Colors.grey,
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                          fontWeight: FontWeight.w500,
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 6),
-                      Text(
-                        days[index]['number']!,
-                        style: TextStyle(
+                      MainText(
+                        text: days[index]['number']!,
                           color: isToday ? Colors.white : Colors.black,
                           fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
                         textAlign: TextAlign.center,
                       ),
                     ],

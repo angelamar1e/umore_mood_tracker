@@ -7,7 +7,8 @@ import 'package:umore_mood_tracker/features/mood_history/cubit/mood_history_cubi
 import 'package:umore_mood_tracker/features/mood_history/views/mood_history_view.dart';
 import 'package:umore_mood_tracker/features/mood_stats/cubit/mood_stats_cubit.dart';
 import 'package:umore_mood_tracker/features/mood_stats/views/mood_stats_view.dart';
-import 'package:umore_mood_tracker/features/start/start.dart';
+import 'package:umore_mood_tracker/features/profile/view/profile_view.dart';
+import 'package:umore_mood_tracker/features/start/views/start_view.dart';
 import 'package:umore_mood_tracker/shared/routes/app_routes.dart';
 
 final GoRouter router = GoRouter(
@@ -51,6 +52,15 @@ final GoRouter router = GoRouter(
               (context, state) => BlocProvider(
                 create: (context) => MoodStatsCubit(),
                 child: const MoodStatsView(),
+              ),
+        ),
+        GoRoute(
+          path: 'profile',
+          name: AppRoutes.profile,
+          builder:
+              (context, state) => BlocProvider(
+                create: (context) => MoodStatsCubit(),
+                child: const ProfileView(),
               ),
         ),
       ],

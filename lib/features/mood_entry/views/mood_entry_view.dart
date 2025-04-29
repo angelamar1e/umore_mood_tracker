@@ -23,8 +23,7 @@ class MoodEntryView extends StatelessWidget {
         if (state.status == MoodEntryStatus.completed) {
           Future.delayed(const Duration(seconds: 2), () {
             if (context.mounted) {
-              // Check if still mounted before using context
-              context.goNamed('home'); // Navigate to mood stats screen
+              context.goNamed('home');
             }
           });
 
@@ -35,6 +34,7 @@ class MoodEntryView extends StatelessWidget {
           showNavBar: false,
           showFab: false,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ProgressDotIndicator(isFirstStep: isFirstStep),
               SizedBox(height: 16),
@@ -57,14 +57,8 @@ class MoodEntryView extends StatelessWidget {
               Expanded(
                 child:
                     isFirstStep
-                        ? MoodSelection(
-                          cubit,
-                          selectedIndex: selectedIndex,
-                        )
-                        : JournalEntry(
-                          context,
-                          selectedIndex: selectedIndex,
-                        ),
+                        ? MoodSelection(cubit, selectedIndex: selectedIndex)
+                        : JournalEntry(context, selectedIndex: selectedIndex),
               ),
               SizedBox(height: 16),
               if (isFirstStep && selectedIndex != -1)
@@ -72,10 +66,6 @@ class MoodEntryView extends StatelessWidget {
                   onPressed: () => cubit.startNoteEntry(),
                   text: 'Next',
                   backgroundColor: Colors.white,
-                  textStyle: TextStyle(
-                    fontSize: 18,
-                    color: Color(0xFF4169E1),
-                  ),
                 )
               else if (!isFirstStep)
                 Column(
@@ -85,18 +75,14 @@ class MoodEntryView extends StatelessWidget {
                       text: 'Back',
                       icon: Icon(Icons.arrow_back_ios_new, size: 18),
                       borderColor: Colors.white,
+                      textColor: Colors.white,
                       foregroundColor: Colors.white,
-                      textStyle: TextStyle(fontSize: 18),
                     ),
                     const SizedBox(height: 8),
                     CustomElevatedButton(
                       onPressed: () => cubit.completeMoodEntry(),
                       text: 'Finish',
                       backgroundColor: Colors.white,
-                      textStyle: TextStyle(
-                        fontSize: 18,
-                        color: Color(0xFF4169E1),
-                      ),
                     ),
                   ],
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:umore_mood_tracker/shared/theme/app_colors.dart';
 import 'package:umore_mood_tracker/shared/widgets/main_layout.dart';
 
 class SuccessScreen extends StatelessWidget {
@@ -7,6 +8,8 @@ class SuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainLayout(
+      showNavBar: false,
+      showFab: false,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -14,25 +17,18 @@ class SuccessScreen extends StatelessWidget {
             Container(
               width: 120,
               height: 120,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.green,
                 shape: BoxShape.circle,
               ),
               child: Center(
-                child: Icon(
-                  Icons.check, // Use check instead of check_circle
-                  color: Colors.white,
-                  size: 80,
-                ),
+                child: const Icon(Icons.check, color: Colors.white, size: 80),
               ),
             ),
-            SizedBox(height: 32),
-            Text(
-              'Mood Entry Saved!',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Text('Returning to home...', style: TextStyle(fontSize: 16)),
+            const SizedBox(height: 32),
+            const MainText(text: 'Mood Entry Saved!'),
+            const SizedBox(height: 8),
+            const SubText(text: 'Returning to home...'),
           ],
         ),
       ),
@@ -57,7 +53,7 @@ class CustomBottomNavBar extends StatelessWidget {
       height: 64,
       padding: EdgeInsets.zero,
       notchMargin: 8,
-      shape: CircularNotchedRectangle(),
+      shape: const CircularNotchedRectangle(),
       elevation: 8.0,
       child: Row(
         children: [
@@ -70,9 +66,7 @@ class CustomBottomNavBar extends StatelessWidget {
               ],
             ),
           ),
-
-          SizedBox(width: 48),
-
+          const SizedBox(width: 48),
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -95,9 +89,9 @@ class CustomBottomNavBar extends StatelessWidget {
             onPressed: () => onItemSelected(index),
             icon: Icon(icon),
             color: selectedIndex == index ? Color(0xFF4169E1) : Colors.black,
-            iconSize: 28,
+            iconSize: 32,
             padding: EdgeInsets.zero,
-            constraints: BoxConstraints(),
+            constraints: const BoxConstraints(),
           ),
           Text(
             label,
@@ -116,7 +110,7 @@ class CustomBottomNavBar extends StatelessWidget {
 class ProgressDotIndicator extends StatelessWidget {
   const ProgressDotIndicator({super.key, required this.isFirstStep});
 
-  final bool isFirstStep; // Indicates if the current step is the first step
+  final bool isFirstStep;
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +142,8 @@ class CustomElevatedButton extends StatelessWidget {
     this.context,
     this.onPressed,
     required this.text,
-    this.textStyle,
+    this.fontSize,
+    this.textColor,
     this.backgroundColor,
     this.foregroundColor,
     this.padding,
@@ -158,7 +153,8 @@ class CustomElevatedButton extends StatelessWidget {
   final BuildContext? context;
   final VoidCallback? onPressed;
   final String text;
-  final TextStyle? textStyle;
+  final double? fontSize;
+  final Color? textColor;
   final Color? backgroundColor;
   final Color? foregroundColor;
   final EdgeInsets? padding;
@@ -174,7 +170,13 @@ class CustomElevatedButton extends StatelessWidget {
           foregroundColor: foregroundColor,
           padding: padding ?? EdgeInsets.symmetric(vertical: 12),
         ),
-        child: Text(text, style: textStyle ?? TextStyle(fontSize: 16)),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: fontSize ?? 14,
+            color: textColor ?? AppColors.mainColor,
+          ),
+        ),
       ),
     );
   }
@@ -186,8 +188,9 @@ class CustomOutlinedButton extends StatelessWidget {
     this.onPressed,
     required this.text,
     required this.icon,
-    this.textStyle,
     required this.borderColor,
+    this.fontSize,
+    this.textColor,
     this.foregroundColor,
     this.padding,
     super.key,
@@ -197,8 +200,9 @@ class CustomOutlinedButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final String text;
   final Icon icon;
-  final TextStyle? textStyle;
   final Color borderColor;
+  final double? fontSize;
+  final Color? textColor;
   final Color? foregroundColor;
   final EdgeInsets? padding;
 
@@ -213,7 +217,13 @@ class CustomOutlinedButton extends StatelessWidget {
           side: BorderSide(width: 1, color: borderColor),
           foregroundColor: foregroundColor,
         ),
-        child: Text(text, style: textStyle ?? TextStyle(fontSize: 16)),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: fontSize ?? 14,
+            color: textColor ?? AppColors.mainColor,
+          ),
+        ),
       ),
     );
   }
@@ -222,21 +232,33 @@ class CustomOutlinedButton extends StatelessWidget {
 // Widget to display main text with bold styling
 class MainText extends StatelessWidget {
   final String text;
-  final TextStyle? textStyle;
-  final Color color;
+  final TextAlign? textAlign;
+  final FontWeight? fontWeight;
+  final double? fontSize;
+  final FontStyle? fontStyle;
+  final Color? color;
 
   const MainText({
     super.key,
     required this.text,
-    this.textStyle,
-    required this.color,
+    this.textAlign,
+    this.fontWeight,
+    this.fontSize,
+    this.fontStyle,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: textStyle ?? TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: color),
+      style: TextStyle(
+        color: color ?? Colors.white,
+        fontSize: fontSize ?? 26,
+        fontWeight: fontWeight ?? FontWeight.bold,
+        fontStyle: fontStyle ?? FontStyle.normal,
+      ),
+      textAlign: textAlign ?? TextAlign.center,
     );
   }
 }
@@ -244,25 +266,33 @@ class MainText extends StatelessWidget {
 // Widget to display subtext with smaller font size
 class SubText extends StatelessWidget {
   final String text;
-  final TextStyle? textStyle;
-  final Color color; // Text to display
+  final TextAlign? textAlign;
+  final double? fontSize;
+  final FontStyle? fontStyle;
+  final FontWeight? fontWeight;
+  final Color? color;
 
   const SubText({
     super.key,
     required this.text,
-    this.textStyle,
-    required this.color,
+    this.textAlign,
+    this.fontSize,
+    this.fontStyle,
+    this.fontWeight,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: textStyle ?? TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.normal,
-        color: color,
+      style: TextStyle(
+        color: color ?? Colors.white,
+        fontSize: fontSize ?? 16,
+        fontWeight: fontWeight ?? FontWeight.normal,
+        fontStyle: fontStyle ?? FontStyle.normal,
       ),
+      textAlign: textAlign ?? TextAlign.center,
     );
   }
 }

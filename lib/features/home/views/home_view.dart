@@ -13,8 +13,13 @@ class Home extends StatelessWidget {
     return MainLayout(
       currentIndex: 0,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          MainText(text: "Hello, $name!", color: Colors.white),
+          MainText(
+            text: "Hello, $name!",
+            color: Colors.white,
+            textAlign: TextAlign.start,
+          ),
           const SizedBox(height: 20),
           DayTimeline(hasData: false),
         ],
